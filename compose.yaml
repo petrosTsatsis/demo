@@ -1,7 +1,6 @@
 version: '3.9'
 
 services:
-
   app:
     container_name: app
     image: thesis/app:1.0.0
@@ -14,6 +13,7 @@ services:
       - DATABASE_PASSWORD=pass123
     depends_on:
       - postgres
+    command: ["./wait-for-db.sh", "postgres", "5432", "./init-db.sh"]
 
   postgres:
     container_name: postgres
@@ -26,5 +26,6 @@ services:
       POSTGRES_DB: sw_database
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./assets/database/users.sql:/init.sql
 volumes:
   pgdata: {}
