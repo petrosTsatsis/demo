@@ -5,6 +5,7 @@ import dit.hua.gr.thesis.demo.service.SoftwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +19,14 @@ public class SoftwareController {
     private SoftwareService softwareService;
 
     // get all softwares
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @GetMapping("")
     public List<Software> getAll(){
         return softwareService.findAll();
     }
 
     // get software by id
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @GetMapping("/{software_id}")
     public ResponseEntity<?> getSoftware(@PathVariable int software_id) {
         Software software = softwareService.findById(software_id);
@@ -36,6 +39,7 @@ public class SoftwareController {
     }
 
     // create a new software
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add-software")
     public ResponseEntity<String> addSoftware(@Validated @RequestBody Software software){
         softwareService.save(software);
@@ -43,6 +47,7 @@ public class SoftwareController {
     }
 
     // delete software by id
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{software_id}")
     public ResponseEntity<String> deleteSoftware(@PathVariable int software_id){
         Software software = softwareService.findById(software_id);

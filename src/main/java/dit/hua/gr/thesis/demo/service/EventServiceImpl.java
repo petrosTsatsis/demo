@@ -41,4 +41,6 @@ public class EventServiceImpl implements EventService{
     public void delete(int id) {
         eventDAO.delete(id);
     }
+
+
 }

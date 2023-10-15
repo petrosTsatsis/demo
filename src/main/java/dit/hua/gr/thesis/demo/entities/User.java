@@ -1,8 +1,10 @@
 package dit.hua.gr.thesis.demo.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -44,6 +46,13 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_events",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    @JsonIgnore
+    private List<Event> events;
 
     // define constructors
 
@@ -96,6 +105,12 @@ public class User {
         this.roles = roles;
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
 
     // define toString method
 

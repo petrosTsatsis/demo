@@ -39,6 +39,11 @@ public class Notification {
     @JsonIgnore
     private List<Manager> managers;
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "event_id")
+    @JsonIgnore
+    private Event event;
+
     // define constructors
 
     public Notification(NotificationType type, String content, String timestamp, String status) {
@@ -108,6 +113,12 @@ public class Notification {
         this.managers = managers;
     }
 
+    public Event getEvent() {
+        return event;
+    }
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
     // define toString method
 

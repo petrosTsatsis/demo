@@ -17,4 +17,5 @@ public interface EventService {
 
     // delete event by id
     public void delete(int id);
+
 }

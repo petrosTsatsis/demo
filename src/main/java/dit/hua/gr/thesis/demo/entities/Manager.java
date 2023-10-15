@@ -33,11 +33,11 @@ public class Manager extends User{
     private String phoneNumber;
 
     @OneToMany(mappedBy = "manager",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JsonIgnore
     private List<Appointment> appointments;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinTable(
             name = "manager_notifications",
             joinColumns = @JoinColumn(name = "manager_id"),
@@ -133,21 +133,14 @@ public class Manager extends User{
         this.purchases = purchases;
     }
 
-
     // define toString method
-
 
     @Override
     public String toString() {
         return "Manager{" +
-//                "user=" + user +
                 ", fname='" + fname + '\'' +
                 ", lname='" + lname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", appointments=" + appointments +
-                ", notifications=" + notifications +
-                ", softwares=" + softwares +
-                ", purchases=" + purchases +
                 '}';
     }
 }

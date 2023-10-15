@@ -15,7 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,16 +41,19 @@ public class CustomerController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private NotificationScheduler notificationScheduler;
+
     // get all customers
     @GetMapping("")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Customer> getAll(){
         return customerService.findAll();
     }
 
     // get customer by id
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{customer_id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getCustomer(@PathVariable int customer_id) {
         Customer customer = customerService.findById(customer_id);
         if (customer == null) {
@@ -60,9 +65,10 @@ public class CustomerController {
     }
 
     // create a new customer
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add-customer")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> addCustomer(@Validated @RequestBody Customer customer) {
+
         if (customerRepository.existsByUsername(customer.getUsername())) {
             return ResponseEntity.badRequest().body("Error: Username is already taken!");
         }
@@ -73,17 +79,36 @@ public class CustomerController {
 
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
+        // add customer role to the new customer/user
         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         customer.getRoles().add(userRole);
 
+        // set empty arrayList of notification
+        customer.setNotifications(new ArrayList<>());
+
+        // save the customer
         customerService.save(customer);
+
+        Optional<User> optionalUser = userRepository.findByUsername(customer.getUsername());
+
+        if(optionalUser.isEmpty()){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "User not found !"
+            );
+        }
+
+        User user = optionalUser.get();
+
+        // send welcome notification
+        notificationScheduler.sendNotificationAfterSignUp(user);
+
         return ResponseEntity.ok("Customer successfully created!");
     }
 
     // delete customer by id
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{customer_id}")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> deleteCustomer(@PathVariable int customer_id){
 
         Customer customer = customerService.findById(customer_id);

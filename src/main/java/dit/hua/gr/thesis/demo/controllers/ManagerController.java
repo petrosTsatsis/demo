@@ -41,15 +41,15 @@ public class ManagerController {
 
     // get all managers
     @GetMapping("")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Manager> getAll(){
         return managerService.findAll();
     }
 
     // get manager by id
     @GetMapping("/{manager_id}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> getCustomer(@PathVariable int manager_id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getManager(@PathVariable int manager_id) {
         Manager manager = managerService.findById(manager_id);
         if (manager == null) {
             String errorMessage = "Manager with ID " + manager_id + " does not exist.";
@@ -61,7 +61,7 @@ public class ManagerController {
 
     // create a new manager
     @PostMapping("/add-manager")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> addManager(@Validated @RequestBody Manager manager){
 
         if (managerRepository.existsByUsername(manager.getUsername())) {
@@ -84,7 +84,7 @@ public class ManagerController {
 
     // delete manager by id
     @DeleteMapping("/{manager_id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteManager(@PathVariable int manager_id){
 
         Manager manager = managerService.findById(manager_id);

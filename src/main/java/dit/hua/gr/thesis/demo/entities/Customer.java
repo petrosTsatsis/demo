@@ -32,16 +32,16 @@ public class Customer extends User{
     private String phoneNumber;
 
     @OneToMany(mappedBy = "customer",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JsonIgnore
     private List<Appointment> appointments;
 
     @OneToMany(mappedBy = "customer",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JsonIgnore
     private List<Purchase> purchases;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinTable(
             name = "customer_notifications",
             joinColumns = @JoinColumn(name = "customer_id"),
@@ -151,14 +151,9 @@ public class Customer extends User{
     @Override
     public String toString() {
         return "Customer{" +
-//                "user=" + user +
-                ", fname='" + fname + '\'' +
+                "fname='" + fname + '\'' +
                 ", lname='" + lname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", appointments=" + appointments +
-                ", purchases=" + purchases +
-                ", notifications=" + notifications +
-                ", softwares=" + softwares +
                 ", organization=" + organization +
                 '}';
     }
