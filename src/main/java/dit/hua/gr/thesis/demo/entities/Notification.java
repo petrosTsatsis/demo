@@ -1,9 +1,12 @@
 package dit.hua.gr.thesis.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,28 +28,32 @@ public class Notification {
     private String content;
 
     @Column(name = "timestamp")
-    @NotBlank(message = "This field cannot be blank.")
-    private String timestamp;
+    @Temporal(TemporalType.DATE)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date timestamp;
 
     @Column(name = "status")
     private String status;
 
-    @ManyToMany(mappedBy = "notifications")
-    @JsonIgnore
-    private List<Customer> customers;
+    // customer relationship field
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    @ManyToMany(mappedBy = "notifications")
-    @JsonIgnore
-    private List<Manager> managers;
+    // user relationship field
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    // event relationship field
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "event_id")
-    @JsonIgnore
     private Event event;
 
-    // define constructors
 
-    public Notification(NotificationType type, String content, String timestamp, String status) {
+    // define constructors
+    public Notification(NotificationType type, String content, Date timestamp, String status) {
         this.type = type;
         this.content = content;
         this.timestamp = timestamp;
@@ -81,11 +88,11 @@ public class Notification {
         this.content = content;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -97,41 +104,39 @@ public class Notification {
         this.status = status;
     }
 
-    public List<Customer> getCustomers() {
-        return customers;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public List<Manager> getManagers() {
-        return managers;
+    public User getUser() {
+        return user;
     }
 
-    public void setManagers(List<Manager> managers) {
-        this.managers = managers;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Event getEvent() {
         return event;
     }
+
     public void setEvent(Event event) {
         this.event = event;
     }
 
     // define toString method
-
     @Override
     public String toString() {
         return "Notification{" +
                 "id=" + id +
                 ", type=" + type +
                 ", content='" + content + '\'' +
-                ", timestamp='" + timestamp + '\'' +
+                ", timestamp=" + timestamp +
                 ", status='" + status + '\'' +
-                ", customers=" + customers +
-                ", managers=" + managers +
                 '}';
     }
 }

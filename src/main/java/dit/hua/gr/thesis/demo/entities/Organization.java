@@ -1,5 +1,6 @@
 package dit.hua.gr.thesis.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -22,10 +23,11 @@ public class Organization extends Customer{
     @NotBlank(message = "This field cannot be blank.")
     private String name;
 
+    // customer certificate relationship field
     @OneToMany(mappedBy = "organization",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnore
-    private List<Customer> customers;
+    private List<Customer> Customer;
 
     // define constructors
 
@@ -55,23 +57,20 @@ public class Organization extends Customer{
         this.name = name;
     }
 
-    public List<Customer> getCustomers() {
-        return customers;
+    public List<dit.hua.gr.thesis.demo.entities.Customer> getCustomer() {
+        return Customer;
     }
 
-    public void setCustomers(ArrayList<Customer> customers) {
-        this.customers = customers;
+    public void setCustomer(List<dit.hua.gr.thesis.demo.entities.Customer> customer) {
+        Customer = customer;
     }
-
 
     // define toString method
-
     @Override
     public String toString() {
         return "Organization{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", customers=" + customers +
                 '}';
     }
 }

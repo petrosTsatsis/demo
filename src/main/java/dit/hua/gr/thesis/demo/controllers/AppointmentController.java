@@ -1,11 +1,9 @@
 package dit.hua.gr.thesis.demo.controllers;
 
 import dit.hua.gr.thesis.demo.entities.*;
+import dit.hua.gr.thesis.demo.repositories.AppointmentRepository;
+import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
 import dit.hua.gr.thesis.demo.repositories.UserRepository;
-import dit.hua.gr.thesis.demo.service.AppointmentService;
-import dit.hua.gr.thesis.demo.service.CustomerService;
-import dit.hua.gr.thesis.demo.service.EventService;
-import dit.hua.gr.thesis.demo.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,93 +25,109 @@ import static java.lang.Integer.parseInt;
 public class AppointmentController {
 
     @Autowired
-    private AppointmentService appointmentService;
+    private AppointmentRepository appointmentRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private ManagerService managerService;
-
-    @Autowired
-    private EventService eventService;
+    private CustomerRepository customerRepository;
 
     // get all appointments
     @GetMapping("")
-    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     public List<Appointment> getAll(){
-        return appointmentService.findAll();
+        return appointmentRepository.findAll();
     }
 
     // get appointment by id
-    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @GetMapping("/{appointment_id}")
     public ResponseEntity<?> getAppointment(@PathVariable int appointment_id) {
-        Appointment appointment = appointmentService.findById(appointment_id);
-        if (appointment == null) {
-            String errorMessage = "Appointment with ID " + appointment_id + " does not exist.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointment_id);
+        if(optionalAppointment.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Appointment with ID : " + appointment_id + " not found !"
+            );
         }
+        Appointment appointment = optionalAppointment.get();
 
         return ResponseEntity.ok(appointment);
     }
 
     // create a new appointment
-    @PreAuthorize("hasRole('USER')")
-    @PostMapping("/managers/{manager_id}/add-appointment")
-    public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment, @PathVariable int manager_id, Authentication authentication) {
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @PostMapping("/customers/{customer_id}/add-appointment")
+    public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment, @PathVariable int customer_id, Authentication authentication) {
 
         // extract the currently authenticated user's username from Authentication
         String username = authentication.getName();
-        Optional<User> optionalCustomer = userRepository.findByUsername(username);
-        if(optionalCustomer.isEmpty()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Customer not found !"
-            );
-        }
-
-        User user = optionalCustomer.get();
-        int customer_id = user.getId();
-
-        Customer customer = customerService.findById(customer_id);
-        Manager manager = managerService.findById(manager_id);
-
-        // set appointment's customer and manager
-        appointment.setCustomer(customer);
-        appointment.setManager(manager);
-        Optional<User> managerUserOptional = userRepository.findByUsername(manager.getUsername());
-
-        if(managerUserOptional.isEmpty()){
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "User not found !"
             );
         }
-        User managerUser = managerUserOptional.get();
 
-        // add the users in the users list of the event
+        User user = optionalUser.get();
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        // initialize the list of customers and users
+        appointment.setCustomers(new ArrayList<>());
+        appointment.setUsers(new ArrayList<>());
+
+        // add user and customer
         appointment.getUsers().add(user);
-        appointment.getUsers().add(managerUser);
-        appointment.setUsers(appointment.getUsers());
+        appointment.getCustomers().add(customer);
+
+        user.getEvents().add(appointment);
+        customer.getEvents().add(appointment);
 
         // save appointment
-        eventService.save(appointment);
+        appointmentRepository.save(appointment);
+
+        // save user
+        userRepository.save(user);
+
+        // save customer
+        customerRepository.save(customer);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Appointment successfully created !");
     }
 
     // delete an appointment by id
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @DeleteMapping("/{appointment_id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable int appointment_id){
-        Appointment appointment = appointmentService.findById(appointment_id);
-        if (appointment == null) {
-            String errorMessage = "Appointment with ID " + appointment_id + " does not exist.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointment_id);
+        if(optionalAppointment.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Appointment with ID : " + appointment_id + " not found !"
+            );
         }
-        appointmentService.delete(appointment_id);
+        Appointment appointment = optionalAppointment.get();
+
+        List<Customer> customers = appointment.getCustomers();
+        for(Customer customer : customers){
+            customer.getEvents().remove(appointment);
+            customerRepository.save(customer);
+        }
+
+        List<User> users = appointment.getUsers();
+        for(User user : users){
+            user.getEvents().remove(appointment);
+            userRepository.save(user);
+        }
+
+        appointmentRepository.delete(appointment);
         return ResponseEntity.ok("Appointment with ID " + appointment_id + " successfully deleted ! ");
     }
 }

@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class Role {
 
     // define fields
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,7 +24,6 @@ public class Role {
     public Role() {}
 
     // define getters/setters
-
     public Integer getId() {
         return id;
     }

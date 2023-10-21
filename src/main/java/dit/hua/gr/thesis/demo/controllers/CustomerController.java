@@ -1,13 +1,8 @@
 package dit.hua.gr.thesis.demo.controllers;
 
-import dit.hua.gr.thesis.demo.entities.Customer;
-import dit.hua.gr.thesis.demo.entities.ERole;
-import dit.hua.gr.thesis.demo.entities.Role;
-import dit.hua.gr.thesis.demo.entities.User;
-import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
-import dit.hua.gr.thesis.demo.repositories.RoleRepository;
-import dit.hua.gr.thesis.demo.repositories.UserRepository;
-import dit.hua.gr.thesis.demo.service.CustomerService;
+import dit.hua.gr.thesis.demo.entities.*;
+import dit.hua.gr.thesis.demo.repositories.*;
+import dit.hua.gr.thesis.demo.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/customers")
@@ -27,81 +20,91 @@ import java.util.Optional;
 public class CustomerController {
 
     @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private CustomerRepository customerRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private SoftwareRepository softwareRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private EventRepository eventRepository;
 
     @Autowired
-    private NotificationScheduler notificationScheduler;
+    private NotificationRepository notificationRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     // get all customers
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @GetMapping("")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<Customer> getAll(){
-        return customerService.findAll();
+    public ResponseEntity<CustomerListResponse> getAllCustomers() {
+        List<Customer> customers = customerRepository.findAll();
+        long customerCount = customerRepository.count();
+
+        CustomerListResponse response = new CustomerListResponse(customers, customerCount);
+        return ResponseEntity.ok(response);
+    }
+
+    // create class that combine count and customer list
+    public static class CustomerListResponse {
+        private List<Customer> customers;
+        private long customerCount;
+
+        public CustomerListResponse(List<Customer> customers, long customerCount) {
+            this.customers = customers;
+            this.customerCount = customerCount;
+        }
+
+        public List<Customer> getCustomers() {
+            return customers;
+        }
+
+        public long getCustomerCount() {
+            return customerCount;
+        }
     }
 
     // get customer by id
     @GetMapping("/{customer_id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     public ResponseEntity<?> getCustomer(@PathVariable int customer_id) {
-        Customer customer = customerService.findById(customer_id);
-        if (customer == null) {
-            String errorMessage = "Customer with ID " + customer_id + " does not exist.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
         }
-
+        Customer customer = optionalCustomer.get();
         return ResponseEntity.ok(customer);
     }
 
     // create a new customer
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @PostMapping("/add-customer")
     public ResponseEntity<String> addCustomer(@Validated @RequestBody Customer customer) {
-
-        if (customerRepository.existsByUsername(customer.getUsername())) {
-            return ResponseEntity.badRequest().body("Error: Username is already taken!");
-        }
 
         if (customerRepository.existsByEmail(customer.getEmail())) {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
         }
+        Calendar calendar = Calendar.getInstance();
+        Date registrationDate = calendar.getTime();
 
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-
-        // add customer role to the new customer/user
-        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        customer.getRoles().add(userRole);
-
-        // set empty arrayList of notification
-        customer.setNotifications(new ArrayList<>());
+        // set the current date as registration date
+        customer.setRegistrationDate(registrationDate);
 
         // save the customer
-        customerService.save(customer);
+        customerRepository.save(customer);
 
-        Optional<User> optionalUser = userRepository.findByUsername(customer.getUsername());
+        // send welcome email
+        String message = "Welcome " + customer.getFname() + " hope you enjoy the journey !";
+        String subject = "Welcome";
+        emailService.sendEmail(customer.getEmail(), message, subject);
 
-        if(optionalUser.isEmpty()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "User not found !"
-            );
-        }
+        Date notificationDate = calendar.getTime();
 
-        User user = optionalUser.get();
-
-        // send welcome notification
-        notificationScheduler.sendNotificationAfterSignUp(user);
+        Notification notification = new Notification(NotificationType.EMAIL,message, notificationDate,"sent");
+        notification.setCustomer(customer);
+        notificationRepository.save(notification);
 
         return ResponseEntity.ok("Customer successfully created!");
     }
@@ -109,21 +112,32 @@ public class CustomerController {
     // delete customer by id
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{customer_id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable int customer_id){
+    public ResponseEntity<String> deleteCustomer(@PathVariable int customer_id) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
 
-        Customer customer = customerService.findById(customer_id);
-
-        Optional<User> optionalUser = userRepository.findByUsername(customer.getUsername());
-
-        if(optionalUser.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist !");
+        if (optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found!"
+            );
         }
 
-        User user = optionalUser.get();
+        Customer customer = optionalCustomer.get();
 
-        userRepository.delete(user);
+        List<Event> events = customer.getEvents();
+        for (Event event : events) {
+            event.getCustomers().remove(customer);
+            eventRepository.save(event);
+        }
 
-        return ResponseEntity.ok("Customer with ID " + customer_id + " successfully deleted ! ");
+        List<Software> softwares = customer.getSoftwares();
+        for (Software software : softwares) {
+            software.getCustomers().remove(customer);
+            softwareRepository.save(software);
+        }
+
+        customerRepository.delete(customer);
+
+        return ResponseEntity.ok("Customer with ID " + customer_id + " successfully deleted!");
     }
 
 }

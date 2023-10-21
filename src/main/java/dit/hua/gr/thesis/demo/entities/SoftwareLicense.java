@@ -1,35 +1,33 @@
 package dit.hua.gr.thesis.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import org.aspectj.weaver.ast.Not;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "purchases")
-public class Purchase {
+@Table(name = "softwareLicences")
+public class SoftwareLicense {
 
     // define fields
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
-    @Column(name = "price")
-    @NotNull(message = "This field cannot be blank.")
-    private double price;
-
-    @Column(name = "purchase_date")
+    @Column(name = "activation_date")
     @Temporal(TemporalType.DATE)
     @JsonDeserialize(using = CustomDateDeserializer.class)
     @JsonSerialize(using = CustomDateSerializer.class)
-    private Date purchaseDate;
+    private Date activationDate;
+
+    @Column(name = "expiration_date")
+    @Temporal(TemporalType.DATE)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date expirationDate;
 
     // customer relationship field
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
@@ -41,16 +39,17 @@ public class Purchase {
     @JoinColumn(name = "software_id")
     private Software software;
 
+
     // define constructors
 
-    public Purchase(double price, Date purchaseDate, Customer customer, Software software) {
-        this.price = price;
-        this.purchaseDate = purchaseDate;
+    public SoftwareLicense(Date activationDate, Date expirationDate, Customer customer, Software software) {
+        this.activationDate = activationDate;
+        this.expirationDate = expirationDate;
         this.customer = customer;
         this.software = software;
     }
 
-    public Purchase(){}
+    public SoftwareLicense(){}
 
     // define getters/setters
 
@@ -62,20 +61,20 @@ public class Purchase {
         this.id = id;
     }
 
-    public double getPrice() {
-        return price;
+    public Date getActivationDate() {
+        return activationDate;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setActivationDate(Date activationDate) {
+        this.activationDate = activationDate;
     }
 
-    public Date getPurchaseDate() {
-        return purchaseDate;
+    public Date getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public Customer getCustomer() {
@@ -95,14 +94,13 @@ public class Purchase {
     }
 
     // define toString method
+
     @Override
     public String toString() {
-        return "Purchase{" +
+        return "SoftwareLicense{" +
                 "id=" + id +
-                ", price=" + price +
-                ", purchaseDate=" + purchaseDate +
-                ", customer=" + customer +
-                ", software=" + software +
+                ", activationDate=" + activationDate +
+                ", expirationDate=" + expirationDate +
                 '}';
     }
 }

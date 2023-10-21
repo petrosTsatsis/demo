@@ -1,0 +1,108 @@
+package dit.hua.gr.thesis.demo.entities;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
+import java.util.Date;
+
+@Entity
+@Table(name = "SSLCertificates")
+public class SSLCertificate {
+
+    // define fields
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "type")
+    @NotBlank(message = "This field cannot be blank.")
+    private String type;
+
+    @Column(name = "status")
+    @NotBlank(message = "This field cannot be blank.")
+    private String status;
+
+    @Column(name = "issuer")
+    @NotBlank(message = "This field cannot be blank.")
+    private String issuer;
+
+    @Column(name = "expiration_date")
+    @Temporal(TemporalType.DATE)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date expirationDate;
+
+    // customer relationship field
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "customer_id")
+    @JsonIgnore
+    private Customer customer;
+
+    // define constructors
+    public SSLCertificate(String type, String status, String issuer, Date expirationDate) {
+        this.type = type;
+        this.status = status;
+        this.issuer = issuer;
+        this.expirationDate = expirationDate;
+    }
+
+    public SSLCertificate(){}
+
+    // define getters/setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    // define toString method
+
+}
