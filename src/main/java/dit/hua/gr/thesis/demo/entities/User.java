@@ -16,7 +16,6 @@ import jakarta.validation.constraints.Size;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     // define fields
@@ -41,25 +40,44 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    @Column(name = "first_name")
+    @NotBlank(message = "This field cannot be blank.")
+    @Size(max = 30)
+    private String fname;
+
+    @Column(name = "last_name")
+    @NotBlank(message = "This field cannot be blank.")
+    @Size(max = 30)
+    private String lname;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_events",
+    // event relationship field
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "user_events",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))
     @JsonIgnore
     private List<Event> events;
 
-    // define constructors
+    // notification relationship field
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Notification> notifications;
 
-    public User(String username, String email, String password) {
+    // define constructors
+    public User(String username, String email, String password, String fname, String lname) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.fname = fname;
+        this.lname = lname;
     }
 
     public User(){}
@@ -105,22 +123,48 @@ public class User {
         this.roles = roles;
     }
 
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
     public List<Event> getEvents() {
         return events;
     }
+
     public void setEvents(List<Event> events) {
         this.events = events;
     }
 
-    // define toString method
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
 
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    // define toString method
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
                 ", roles=" + roles +
                 '}';
     }

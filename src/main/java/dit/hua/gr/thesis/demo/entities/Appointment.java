@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "appointments")
@@ -27,23 +28,17 @@ public class Appointment extends Event{
     @Column(name = "call_url")
     private String callUrl;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "customer_id")
-    @JsonIgnore
-    private Customer customer;
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "manager_id")
-    @JsonIgnore
-    private Manager manager;
+    @Column(name = "type")
+    @NotBlank(message = "This field cannot be blank.")
+    private String type;
 
     // define constructors
-
-    public Appointment(String date, String type, String startTime, String endTime, String callUrl) {
-        super(date, type);
+    public Appointment(Date date, String title, String description, String startTime, String endTime, String callUrl, String type) {
+        super(date, title, description);
         this.startTime = startTime;
         this.endTime = endTime;
         this.callUrl = callUrl;
+        this.type = type;
     }
 
     public Appointment(String startTime, String endTime, String callUrl) {
@@ -90,33 +85,14 @@ public class Appointment extends Event{
         this.callUrl = callUrl;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getType() {
+        return type;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Manager getManager() {
-        return manager;
-    }
-
-    public void setManager(Manager manager) {
-        this.manager = manager;
+    public void setType(String type) {
+        this.type = type;
     }
 
     // define toString method
 
-    @Override
-    public String toString() {
-        return "Appointment{" +
-                "id=" + id +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", callUrl='" + callUrl + '\'' +
-                ", customer=" + customer +
-                ", manager=" + manager +
-                '}';
-    }
 }

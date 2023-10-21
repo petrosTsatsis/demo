@@ -1,5 +1,6 @@
 package dit.hua.gr.thesis.demo.payload.request;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -22,11 +23,21 @@ public class SignUpRequest {
     @Size(min = 6, max = 40)
     private String password;
 
-    public SignUpRequest(String username, String email, Set<String> role, String password) {
+    @NotBlank(message = "This field cannot be blank.")
+    @Size(max = 30)
+    private String fname;
+
+    @NotBlank(message = "This field cannot be blank.")
+    @Size(max = 30)
+    private String lname;
+
+    public SignUpRequest(String username, String email, Set<String> role, String password, String fname, String lname) {
         this.username = username;
         this.email = email;
         this.role = role;
         this.password = password;
+        this.fname = fname;
+        this.lname = lname;
     }
 
     public String getUsername() {
@@ -59,5 +70,21 @@ public class SignUpRequest {
 
     public void setRole(Set<String> role) {
         this.role = role;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 }
