@@ -33,13 +33,11 @@ public class NotificationScheduler {
     @Autowired
     private EmailService emailService;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    @Scheduled(cron = "0 0 14 21 10 ?", zone = "Europe/Athens") // Runs at midnight (12:00 AM) every day
+    @Scheduled(cron = "0 0 0 * * ?", zone = "Europe/Athens")// Runs at midnight (12:00 AM) every day
     @Transactional
     public void sendReminderNotification() throws ParseException {
-
-        System.out.println("---------------I AM RUNNING-----------------------");
 
         // get the current date
         Calendar currentDateCalendar = Calendar.getInstance();
@@ -48,10 +46,16 @@ public class NotificationScheduler {
         currentDateCalendar.add(Calendar.DAY_OF_MONTH, 3);
         Date threeDaysFromNowFull = currentDateCalendar.getTime();
 
+        // add seven days to the current date
+        currentDateCalendar.add(Calendar.DAY_OF_MONTH, 4);
+        Date sevenDaysFromNowFull = currentDateCalendar.getTime();
+
         // format dd-mm-yyyy in string
         String threeDaysFromNow = dateFormat.format(threeDaysFromNowFull);
+        String sevenDaysFromNow = dateFormat.format(sevenDaysFromNowFull);
 
         List<Event> events = eventRepository.findAll();
+        String subject = "Reminder";
         for (Event event : events) {
 
             // check if the event date is three days later than the current date
@@ -61,17 +65,16 @@ public class NotificationScheduler {
                 List<Customer> customers = new ArrayList<>(event.getCustomers());
 
                 for (User user : users) {
-                    String content = "Don't forget, you have an event in three days!";
-                    String subject = "Reminder";
 
+                    String content = "Don't forget, you have an event in three days!";
                     // create a reminder in-app notification
-                    Notification inAppNotification = new Notification(NotificationType.IN_APP, content, event.getDate(), "unread");
+                    Notification inAppNotification = new Notification(NotificationType.IN_APP, content, event.getDate(), false);
                     inAppNotification.setEvent(event);
                     inAppNotification.setUser(user);
                     user.getNotifications().add(inAppNotification);
 
                     // create a reminder email notification
-                    Notification emailNotification = new Notification(NotificationType.EMAIL, content, event.getDate(), "unread");
+                    Notification emailNotification = new Notification(NotificationType.EMAIL, content, event.getDate(), false);
                     emailNotification.setEvent(event);
                     emailNotification.setUser(user);
                     user.getNotifications().add(emailNotification);
@@ -82,11 +85,10 @@ public class NotificationScheduler {
                 }
 
                 for (Customer customer : customers) {
-                    String content = "Don't forget, you have an event in three days!";
-                    String subject = "Reminder";
 
+                    String content = "Don't forget, you have an event in three days!";
                     // create a reminder email notification
-                    Notification emailNotification = new Notification(NotificationType.EMAIL, content, event.getDate(), "unread");
+                    Notification emailNotification = new Notification(NotificationType.EMAIL, content, event.getDate(), false);
                     emailNotification.setEvent(event);
                     emailNotification.setCustomer(customer);
                     customer.getNotifications().add(emailNotification);
@@ -96,6 +98,50 @@ public class NotificationScheduler {
 
                 }
             }
+
+        }
+
+        List<Customer> customers = customerRepository.findAll();
+        for (Customer customer : customers) {
+
+            List<SoftwareLicense> softwareLicenses = customer.getSoftwareLicenses();
+            List<SSLCertificate> sslCertificates = customer.getSslCertificates();
+
+            // check the expiration date for every software license and send reminder if it's under 7 days
+            for (SoftwareLicense softwareLicense : softwareLicenses) {
+                if(dateFormat.format(softwareLicense.getExpirationDate()).equals(sevenDaysFromNow)){
+
+                    String content = "Your software license for the " + softwareLicense.getSoftware().getName() + " software is expiring in 7 days," +
+                            " don't forget to renew it !";
+                    // create a reminder email notification
+                    Notification emailNotification = new Notification(NotificationType.EMAIL, content, softwareLicense.getExpirationDate(), false);
+                    //emailNotification.setEvent(event);
+                    emailNotification.setCustomer(customer);
+                    customer.getNotifications().add(emailNotification);
+                    emailService.sendEmail(customer.getEmail(), content, subject);
+
+                    customerRepository.save(customer);
+
+                }
+            }
+
+            // check the expiration date for every ssl certificate and send reminder if it's under 7 days
+            for (SSLCertificate sslCertificate : sslCertificates) {
+                if(dateFormat.format(sslCertificate.getExpirationDate()).equals(sevenDaysFromNow)){
+
+                    String content = "Your ssl Certificate is expiring in 7 days, don't forget to renew it !";
+                    // create a reminder email notification
+                    Notification emailNotification = new Notification(NotificationType.EMAIL, content, sslCertificate.getExpirationDate(), false);
+                    //emailNotification.setEvent(event);
+                    emailNotification.setCustomer(customer);
+                    customer.getNotifications().add(emailNotification);
+                    emailService.sendEmail(customer.getEmail(), content, subject);
+
+                    customerRepository.save(customer);
+
+                }
+            }
+
         }
     }
 
@@ -133,15 +179,13 @@ public class NotificationScheduler {
         String subject = "Update on the way !";
 
         // Create a update email notification
-        Notification emailNotification = new Notification(NotificationType.EMAIL, content, event.getDate(), "unread");
+        Notification emailNotification = new Notification(NotificationType.EMAIL, content, event.getDate(), false);
         emailNotification.setEvent(event);
         emailNotification.setCustomer(customer);
         customer.getNotifications().add(emailNotification);
         emailService.sendEmail(customer.getEmail(), content, subject);
         customerRepository.save(customer);
     }
-
-
 
 
 }

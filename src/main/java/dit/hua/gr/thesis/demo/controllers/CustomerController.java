@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,12 @@ public class CustomerController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     // get all customers
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
@@ -102,11 +109,31 @@ public class CustomerController {
 
         Date notificationDate = calendar.getTime();
 
-        Notification notification = new Notification(NotificationType.EMAIL,message, notificationDate,"sent");
+        Notification notification = new Notification(NotificationType.EMAIL,message, notificationDate,false);
         notification.setCustomer(customer);
         notificationRepository.save(notification);
 
         return ResponseEntity.ok("Customer successfully created!");
+    }
+
+    // add a new contact
+    @PostMapping("{customer_id}/contacts/add-contact")
+    public ResponseEntity<String> addContact(@Validated @PathVariable int customer_id,
+                                             @RequestBody Contact contact){
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        customer.getContacts().add(contact);
+        contact.setCustomer(customer);
+
+        customerRepository.save(customer);
+
+        return ResponseEntity.ok("Contact successfully created!");
     }
 
     // delete customer by id
@@ -139,5 +166,79 @@ public class CustomerController {
 
         return ResponseEntity.ok("Customer with ID " + customer_id + " successfully deleted!");
     }
+
+    // create a new appointment
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @PostMapping("/{customer_id}/add-appointment")
+    public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment, @PathVariable int customer_id, Authentication authentication) {
+
+        // extract the currently authenticated user's username from Authentication
+        String username = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "User not found !"
+            );
+        }
+
+        User user = optionalUser.get();
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        // initialize the list of customers and users
+        appointment.setCustomers(new ArrayList<>());
+        appointment.setUsers(new ArrayList<>());
+
+        // add user and customer
+        appointment.getUsers().add(user);
+        appointment.getCustomers().add(customer);
+
+        user.getEvents().add(appointment);
+        customer.getEvents().add(appointment);
+
+        // save appointment
+        appointmentRepository.save(appointment);
+
+        // save user
+        userRepository.save(user);
+
+        // save customer
+        customerRepository.save(customer);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Appointment successfully created !");
+    }
+
+    // edit customer
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @PutMapping("/{customer_id}/edit-customer")
+    public ResponseEntity<String> updateCustomer(@PathVariable int customer_id, @RequestBody Customer theCustomer){
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer updateCustomer = optionalCustomer.get();
+
+        // update customer
+        updateCustomer.setFname(theCustomer.getFname());
+        updateCustomer.setLname(theCustomer.getLname());
+        updateCustomer.setPhoneNumber(theCustomer.getPhoneNumber());
+        updateCustomer.setEmail(theCustomer.getEmail());
+
+        customerRepository.save(updateCustomer);
+        return ResponseEntity.ok("Customer updated successfully !");
+    }
+
+
 
 }

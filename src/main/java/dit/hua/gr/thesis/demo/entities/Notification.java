@@ -34,16 +34,18 @@ public class Notification {
     private Date timestamp;
 
     @Column(name = "status")
-    private String status;
+    private boolean status;
 
     // customer relationship field
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private Customer customer;
 
     // user relationship field
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     // event relationship field
@@ -53,7 +55,7 @@ public class Notification {
 
 
     // define constructors
-    public Notification(NotificationType type, String content, Date timestamp, String status) {
+    public Notification(NotificationType type, String content, Date timestamp, boolean status) {
         this.type = type;
         this.content = content;
         this.timestamp = timestamp;
@@ -96,11 +98,11 @@ public class Notification {
         this.timestamp = timestamp;
     }
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

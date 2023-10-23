@@ -103,6 +103,7 @@ public class SSLCertificate {
         this.customer = customer;
     }
 
+
     // define toString method
 
 }

@@ -106,4 +106,34 @@ public class SoftwareController {
 
         return ResponseEntity.ok("Software with ID " + software_id + " successfully deleted ! ");
     }
+
+    // update software
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @PutMapping("/{software_id}/edit-software")
+    public ResponseEntity<String> updateSoftware(@PathVariable int software_id, @RequestBody Software theSoftware){
+
+        Optional<Software> optionalSoftware = softwareRepository.findById(software_id);
+
+        if(optionalSoftware.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Software with ID : " + software_id + " not found !"
+            );
+        }
+        Software updateSoftware= optionalSoftware.get();
+
+        // update software
+        updateSoftware.setName(theSoftware.getName());
+        updateSoftware.setDescription(theSoftware.getDescription());
+        updateSoftware.setVersion(theSoftware.getVersion());
+        updateSoftware.setCategory(theSoftware.getCategory());
+        updateSoftware.setPrice(theSoftware.getPrice());
+        updateSoftware.setSystemRequirements(theSoftware.getSystemRequirements());
+        updateSoftware.setLicensingOptions(theSoftware.getLicensingOptions());
+        updateSoftware.setSupportedPlatforms(theSoftware.getSupportedPlatforms());
+        updateSoftware.setReleaseDate(theSoftware.getReleaseDate());
+        updateSoftware.setDeveloper(theSoftware.getDeveloper());
+
+        softwareRepository.save(updateSoftware);
+        return ResponseEntity.ok("Software updated successfully !");
+    }
 }

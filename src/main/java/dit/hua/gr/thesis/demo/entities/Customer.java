@@ -71,6 +71,12 @@ public class Customer{
     @JsonIgnore
     private List<Notification> notifications;
 
+    // contact relationship field
+    @OneToMany(mappedBy = "customer",
+            cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Contact> contacts;
+
     // purchase relationship field
     @OneToMany(mappedBy = "customer",
             cascade = CascadeType.ALL)
@@ -177,6 +183,14 @@ public class Customer{
 
     public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 
     public List<Purchase> getPurchases() {

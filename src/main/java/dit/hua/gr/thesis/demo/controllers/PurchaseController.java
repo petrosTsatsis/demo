@@ -1,9 +1,6 @@
 package dit.hua.gr.thesis.demo.controllers;
 
-import dit.hua.gr.thesis.demo.entities.Customer;
-import dit.hua.gr.thesis.demo.entities.Event;
-import dit.hua.gr.thesis.demo.entities.Purchase;
-import dit.hua.gr.thesis.demo.entities.Software;
+import dit.hua.gr.thesis.demo.entities.*;
 import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
 import dit.hua.gr.thesis.demo.repositories.PurchaseRepository;
 import dit.hua.gr.thesis.demo.repositories.SoftwareRepository;
@@ -132,5 +129,28 @@ public class PurchaseController {
 
         purchaseRepository.delete(purchase);
         return ResponseEntity.ok("Purchase with ID " + purchase_id + " successfully deleted ! ");
+    }
+
+    // update purchase
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @PutMapping("/{purchase_id}/edit-purchase")
+    public ResponseEntity<String> updatePurchase(@PathVariable int purchase_id, @RequestBody Purchase thePurchase){
+
+        Optional<Purchase> optionalPurchase = purchaseRepository.findById(purchase_id);
+        if(optionalPurchase.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Purchase with ID : " + purchase_id + " not found !"
+            );
+        }
+        Purchase updatePurchase = optionalPurchase.get();
+
+        // update purchase
+        updatePurchase.setPrice(thePurchase.getPrice());
+        updatePurchase.setPurchaseDate(thePurchase.getPurchaseDate());
+        updatePurchase.setCustomer(thePurchase.getCustomer());
+        updatePurchase.setSoftware(thePurchase.getSoftware());
+
+        purchaseRepository.save(updatePurchase);
+        return ResponseEntity.ok("Purchase updated successfully !");
     }
 }
