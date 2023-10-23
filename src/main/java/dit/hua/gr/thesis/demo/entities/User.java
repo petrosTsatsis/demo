@@ -71,6 +71,12 @@ public class User {
     @JsonIgnore
     private List<Notification> notifications;
 
+    // contact relationship field
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Contact> contacts;
+
     // define constructors
     public User(String username, String email, String password, String fname, String lname) {
         this.username = username;
@@ -153,6 +159,14 @@ public class User {
 
     public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 
     // define toString method

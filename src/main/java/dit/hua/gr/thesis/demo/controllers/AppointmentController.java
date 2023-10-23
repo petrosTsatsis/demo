@@ -102,7 +102,6 @@ public class AppointmentController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Appointment successfully created !");
     }
-
     // delete an appointment by id
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @DeleteMapping("/{appointment_id}")

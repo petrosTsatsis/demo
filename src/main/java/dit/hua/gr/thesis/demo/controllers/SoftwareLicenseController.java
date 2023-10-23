@@ -99,4 +99,26 @@ public class SoftwareLicenseController {
 
         return ResponseEntity.ok("Software license with ID " + license_id + " successfully deleted ! ");
     }
+    // update software license
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @PutMapping("/{license_id}/edit-license")
+    public ResponseEntity<String> updateSoftwareLicense(@PathVariable int license_id, @RequestBody SoftwareLicense theLicense){
+
+        Optional<SoftwareLicense> optionalSoftwareLicense = softwareLicenseRepository.findById(license_id);
+        if(optionalSoftwareLicense.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Software license with ID : " + license_id + " not found !"
+            );
+        }
+        SoftwareLicense updateLicense = optionalSoftwareLicense.get();
+
+        // update license
+        updateLicense.setActivationDate(theLicense.getActivationDate());
+        updateLicense.setExpirationDate(theLicense.getExpirationDate());
+        updateLicense.setCustomer(theLicense.getCustomer());
+        updateLicense.setSoftware(theLicense.getSoftware());
+
+        softwareLicenseRepository.save(updateLicense);
+        return ResponseEntity.ok("Software license updated successfully !");
+    }
 }

@@ -2,6 +2,7 @@ package dit.hua.gr.thesis.demo.controllers;
 
 import dit.hua.gr.thesis.demo.entities.Customer;
 import dit.hua.gr.thesis.demo.entities.SSLCertificate;
+import dit.hua.gr.thesis.demo.entities.Software;
 import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
 import dit.hua.gr.thesis.demo.repositories.SSLCertificateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.cert.Certificate;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,5 +85,28 @@ public class SSLCertificateController {
         sslCertificateRepository.delete(sslCertificate);
 
         return ResponseEntity.ok("SSL Certificate with ID " + certificate_id + " successfully deleted ! ");
+    }
+
+    // update ssl certificate
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @PutMapping("/{certificate_id}/edit-certificate")
+    public ResponseEntity<String> updateCertificate(@PathVariable int certificate_id, @RequestBody SSLCertificate theCertificate){
+
+        Optional<SSLCertificate> optionalSSLCertificate = sslCertificateRepository.findById(certificate_id);
+        if(optionalSSLCertificate.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "SSL Certificate with ID : " + certificate_id + " not found !"
+            );
+        }
+        SSLCertificate updateCertificate = optionalSSLCertificate.get();
+
+        // update certificate
+        updateCertificate.setType(theCertificate.getType());
+        updateCertificate.setStatus(theCertificate.getStatus());
+        updateCertificate.setIssuer(theCertificate.getIssuer());
+        updateCertificate.setExpirationDate(theCertificate.getExpirationDate());
+
+        sslCertificateRepository.save(updateCertificate);
+        return ResponseEntity.ok("SSL Certificate updated successfully !");
     }
 }

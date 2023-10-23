@@ -15,6 +15,7 @@ public class Appointment extends Event{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "start_time")
