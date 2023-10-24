@@ -99,7 +99,6 @@ public class SoftwareLicenseController {
 
         return ResponseEntity.ok("Software license with ID " + license_id + " successfully deleted ! ");
     }
-
     // update software license
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @PutMapping("/{license_id}/edit-license")

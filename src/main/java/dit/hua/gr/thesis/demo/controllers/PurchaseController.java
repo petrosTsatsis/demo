@@ -1,6 +1,8 @@
 package dit.hua.gr.thesis.demo.controllers;
 
-import dit.hua.gr.thesis.demo.entities.*;
+import dit.hua.gr.thesis.demo.entities.Customer;
+import dit.hua.gr.thesis.demo.entities.Purchase;
+import dit.hua.gr.thesis.demo.entities.Software;
 import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
 import dit.hua.gr.thesis.demo.repositories.PurchaseRepository;
 import dit.hua.gr.thesis.demo.repositories.SoftwareRepository;

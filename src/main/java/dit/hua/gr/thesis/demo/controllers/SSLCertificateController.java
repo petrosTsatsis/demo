@@ -109,5 +109,4 @@ public class SSLCertificateController {
         sslCertificateRepository.save(updateCertificate);
         return ResponseEntity.ok("SSL Certificate updated successfully !");
     }
-
 }
