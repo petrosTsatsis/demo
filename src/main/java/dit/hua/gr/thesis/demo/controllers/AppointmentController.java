@@ -55,53 +55,6 @@ public class AppointmentController {
         return ResponseEntity.ok(appointment);
     }
 
-    // create a new appointment
-    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
-    @PostMapping("/customers/{customer_id}/add-appointment")
-    public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment, @PathVariable int customer_id, Authentication authentication) {
-
-        // extract the currently authenticated user's username from Authentication
-        String username = authentication.getName();
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        if(optionalUser.isEmpty()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "User not found !"
-            );
-        }
-
-        User user = optionalUser.get();
-
-        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
-
-        if(optionalCustomer.isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
-            );
-        }
-        Customer customer = optionalCustomer.get();
-
-        // initialize the list of customers and users
-        appointment.setCustomers(new ArrayList<>());
-        appointment.setUsers(new ArrayList<>());
-
-        // add user and customer
-        appointment.getUsers().add(user);
-        appointment.getCustomers().add(customer);
-
-        user.getEvents().add(appointment);
-        customer.getEvents().add(appointment);
-
-        // save appointment
-        appointmentRepository.save(appointment);
-
-        // save user
-        userRepository.save(user);
-
-        // save customer
-        customerRepository.save(customer);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Appointment successfully created !");
-    }
     // delete an appointment by id
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @DeleteMapping("/{appointment_id}")
@@ -128,5 +81,31 @@ public class AppointmentController {
 
         appointmentRepository.delete(appointment);
         return ResponseEntity.ok("Appointment with ID " + appointment_id + " successfully deleted ! ");
+    }
+
+    // get appointments for the logged-in user
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @GetMapping("/myAppointments")
+    public List<Appointment> myAppointment(Authentication authentication){
+
+        // extract the currently authenticated user's username from Authentication
+        String username = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "User not found !"
+            );
+        }
+
+        User user = optionalUser.get();
+        List<Appointment> myAppointments = new ArrayList<>();
+
+        for(Appointment appointment : appointmentRepository.findAll()){
+
+            if (appointment.getUsers() != null && appointment.getUsers().contains(user)){
+                myAppointments.add(appointment);
+            }
+        }
+        return myAppointments;
     }
 }

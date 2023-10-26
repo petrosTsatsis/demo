@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customers")
@@ -169,7 +169,7 @@ public class CustomerController {
 
     // create a new appointment
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
-    @PostMapping("/{customer_id}/add-appointment")
+    @PostMapping("/{customer_id}/book-appointment")
     public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment, @PathVariable int customer_id, Authentication authentication) {
 
         // extract the currently authenticated user's username from Authentication
@@ -239,6 +239,126 @@ public class CustomerController {
         return ResponseEntity.ok("Customer updated successfully !");
     }
 
+    // get all the purchases for a customer
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @GetMapping("/{customer_id}/purchases")
+    public List<Purchase> getPurchases(@PathVariable int customer_id){
 
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        return customer.getPurchases();
+    }
+
+    // get all the ssl certificates for a customer
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @GetMapping("/{customer_id}/SSLCertificates")
+    public List<SSLCertificate> getCertificates(@PathVariable int customer_id){
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        return customer.getSslCertificates();
+    }
+
+    // get all the software licenses for a customer
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @GetMapping("/{customer_id}/softwareLicenses")
+    public List<SoftwareLicense> getLicenses(@PathVariable int customer_id){
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        return customer.getSoftwareLicenses();
+    }
+
+    // get all the contacts for a customer
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @GetMapping("/{customer_id}/contacts")
+    public List<Contact> getContacts(@PathVariable int customer_id){
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        return customer.getContacts();
+    }
+
+    // get all the softwares for a customer
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @GetMapping("/{customer_id}/softwares")
+    public List<Software> getSoftwares(@PathVariable int customer_id){
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        return customer.getSoftwares();
+    }
+
+    // get the appointments between a customer and the logged in user
+    @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
+    @GetMapping("/{customer_id}/appointments")
+    public List<Appointment> getAppointments(@PathVariable int customer_id, Authentication authentication){
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer_id);
+
+        if(optionalCustomer.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
+            );
+        }
+        Customer customer = optionalCustomer.get();
+
+        // extract the currently authenticated user's username from Authentication
+        String username = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "User not found !"
+            );
+        }
+
+        User user = optionalUser.get();
+        List<Appointment> commonAppointments = new ArrayList<>();
+
+        for(Appointment appointment : appointmentRepository.findAll()){
+            System.out.println(appointment.getCustomers().toString());
+            if(appointment.getCustomers() != null && appointment.getCustomers().contains(customer)
+            && appointment.getUsers() != null && appointment.getUsers().contains(user)) {
+                commonAppointments.add(appointment);
+            }
+        }
+
+        return commonAppointments;
+    }
 
 }
