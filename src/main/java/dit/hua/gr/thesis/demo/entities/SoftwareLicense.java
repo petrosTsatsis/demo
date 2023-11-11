@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-@Table(name = "softwareLicences")
+@Table(name = "software_licences")
 public class SoftwareLicense {
 
     // define fields
@@ -16,6 +16,14 @@ public class SoftwareLicense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "name")
+    @NotBlank(message = "This field cannot be blank.")
+    private String name;
+
+    @Column(name = "status")
+    @NotBlank(message = "This field cannot be blank.")
+    private String status;
 
     @Column(name = "activation_date")
     @Temporal(TemporalType.DATE)
@@ -39,10 +47,10 @@ public class SoftwareLicense {
     @JoinColumn(name = "software_id")
     private Software software;
 
-
     // define constructors
 
-    public SoftwareLicense(Date activationDate, Date expirationDate, Customer customer, Software software) {
+    public SoftwareLicense(String status, Date activationDate, Date expirationDate, Customer customer, Software software) {
+        this.status = status;
         this.activationDate = activationDate;
         this.expirationDate = expirationDate;
         this.customer = customer;
@@ -59,6 +67,22 @@ public class SoftwareLicense {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getActivationDate() {
@@ -99,6 +123,8 @@ public class SoftwareLicense {
     public String toString() {
         return "SoftwareLicense{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
+                ", status='" + status + '\'' +
                 ", activationDate=" + activationDate +
                 ", expirationDate=" + expirationDate +
                 '}';

@@ -73,6 +73,8 @@ public class SoftwareLicenseController {
         Customer customer = optionalCustomer.get();
         Software software = optionalSoftware.get();
 
+        softwareLicense.setName(software.getName());
+
         // set the customer and software in the purchase
         softwareLicense.setCustomer(customer);
         softwareLicense.setSoftware(software);
@@ -113,6 +115,8 @@ public class SoftwareLicenseController {
         SoftwareLicense updateLicense = optionalSoftwareLicense.get();
 
         // update license
+        updateLicense.setName(theLicense.getName());
+        updateLicense.setStatus(theLicense.getStatus());
         updateLicense.setActivationDate(theLicense.getActivationDate());
         updateLicense.setExpirationDate(theLicense.getExpirationDate());
         updateLicense.setCustomer(theLicense.getCustomer());

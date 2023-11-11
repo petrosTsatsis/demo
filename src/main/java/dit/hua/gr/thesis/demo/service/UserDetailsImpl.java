@@ -1,6 +1,8 @@
 package dit.hua.gr.thesis.demo.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 import dit.hua.gr.thesis.demo.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,10 +13,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
-
     private int id;
 
     private String username;
@@ -47,6 +47,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getPassword(),
                 authorities);
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

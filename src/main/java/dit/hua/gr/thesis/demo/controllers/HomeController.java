@@ -32,14 +32,15 @@ public class HomeController {
     // get the counts for the customers, software, purchases
 
     @GetMapping("/home")
-    public ResponseEntity<Map<String, Long>> getCounts() {
-        Map<String, Long> counts = new HashMap<>();
+    public ResponseEntity<Map<String, String>> getCounts() {
+        Map<String, String> counts = new HashMap<>();
 
-        counts.put("Customers", customerRepository.count());
-        counts.put("Software", softwareRepository.count());
-        counts.put("Purchases", purchaseRepository.count());
-        counts.put("Users", userRepository.count());
+        counts.put("Customers", String.valueOf(customerRepository.count()));
+        counts.put("Software", String.valueOf(softwareRepository.count()));
+        counts.put("Purchases", String.valueOf(purchaseRepository.count()));
+        counts.put("Users", String.valueOf(userRepository.count()));
 
         return ResponseEntity.ok(counts);
     }
+
 }
