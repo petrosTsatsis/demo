@@ -1,6 +1,6 @@
 # thesisApp
 
-This is a web application for my thesis project in the Harokopoio Univercity that i currently I am building.
+This is a web application for my thesis project in the Harokopoio University that I am currently building.
 
 To run this app you need to run: 
 
