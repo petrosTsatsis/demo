@@ -50,6 +50,10 @@ public class User {
     @Size(max = 30)
     private String lname;
 
+    @Column(name = "description")
+    @Size(max = 120)
+    private String description;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -78,12 +82,21 @@ public class User {
     private List<Contact> contacts;
 
     // define constructors
-    public User(String username, String email, String password, String fname, String lname) {
+    public User(String username, String email, String password, String fname, String lname, String description) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.fname = fname;
         this.lname = lname;
+        this.description = description;
+    }
+
+    public User(String username, String email, String fname, String lname, String description) {
+        this.username = username;
+        this.email = email;
+        this.fname = fname;
+        this.lname = lname;
+        this.description = description;
     }
 
     public User(){}
@@ -143,6 +156,14 @@ public class User {
 
     public void setLname(String lname) {
         this.lname = lname;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<Event> getEvents() {

@@ -31,13 +31,18 @@ public class SignUpRequest {
     @Size(max = 30)
     private String lname;
 
-    public SignUpRequest(String username, String email, Set<String> role, String password, String fname, String lname) {
+    @Column(name = "description")
+    @Size(max = 120)
+    private String description;
+
+    public SignUpRequest(String username, String email, Set<String> role, String password, String fname, String lname, String description) {
         this.username = username;
         this.email = email;
         this.role = role;
         this.password = password;
         this.fname = fname;
         this.lname = lname;
+        this.description = description;
     }
 
     public String getUsername() {
@@ -86,5 +91,13 @@ public class SignUpRequest {
 
     public void setLname(String lname) {
         this.lname = lname;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -18,7 +18,6 @@ public class SoftwareLicense {
     private int id;
 
     @Column(name = "name")
-    @NotBlank(message = "This field cannot be blank.")
     private String name;
 
     @Column(name = "status")
@@ -50,6 +49,7 @@ public class SoftwareLicense {
     // define constructors
 
     public SoftwareLicense(String status, Date activationDate, Date expirationDate, Customer customer, Software software) {
+        this.name = null;
         this.status = status;
         this.activationDate = activationDate;
         this.expirationDate = expirationDate;
