@@ -12,11 +12,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/Customers")
 @CrossOrigin("*")
 public class CustomerController {
 
@@ -44,31 +45,8 @@ public class CustomerController {
     // get all customers
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @GetMapping("")
-    public ResponseEntity<CustomerListResponse> getAllCustomers() {
-        List<Customer> customers = customerRepository.findAll();
-        long customerCount = customerRepository.count();
-
-        CustomerListResponse response = new CustomerListResponse(customers, customerCount);
-        return ResponseEntity.ok(response);
-    }
-
-    // create class that combine count and customer list
-    public static class CustomerListResponse {
-        private List<Customer> customers;
-        private long customerCount;
-
-        public CustomerListResponse(List<Customer> customers, long customerCount) {
-            this.customers = customers;
-            this.customerCount = customerCount;
-        }
-
-        public List<Customer> getCustomers() {
-            return customers;
-        }
-
-        public long getCustomerCount() {
-            return customerCount;
-        }
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 
     // get customer by id
@@ -93,8 +71,15 @@ public class CustomerController {
         if (customerRepository.existsByEmail(customer.getEmail())) {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
         }
-        Calendar calendar = Calendar.getInstance();
-        Date registrationDate = calendar.getTime();
+
+        // specify the time zone ("Europe/Athens")
+        ZoneId zoneId = ZoneId.of("Europe/Athens");
+
+        // use LocalDateTime to get the current date and time in the specified time zone
+        LocalDateTime registrationDateTime = LocalDateTime.now(zoneId);
+
+        // convert LocalDateTime to Date
+        Date registrationDate = Date.from(registrationDateTime.atZone(zoneId).toInstant());
 
         // set the current date as registration date
         customer.setRegistrationDate(registrationDate);
@@ -107,9 +92,10 @@ public class CustomerController {
         String subject = "Welcome";
         emailService.sendEmail(customer.getEmail(), message, subject);
 
-        Date notificationDate = calendar.getTime();
+        // convert LocalDateTime to Date for the Notification object too
+        Date notificationDate = Date.from(registrationDateTime.atZone(zoneId).toInstant());
 
-        Notification notification = new Notification(NotificationType.EMAIL,message, notificationDate,false);
+        Notification notification = new Notification(NotificationType.EMAIL, message, notificationDate, false);
         notification.setCustomer(customer);
         notificationRepository.save(notification);
 

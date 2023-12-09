@@ -15,10 +15,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @RestController
-@RequestMapping("/softwares")
+@RequestMapping("/Software")
 public class SoftwareController {
 
     @Autowired
@@ -30,31 +32,8 @@ public class SoftwareController {
     // get all softwares
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @GetMapping("")
-    public ResponseEntity<SoftwareListResponse> getAllSoftware() {
-        List<Software> softwareList = softwareRepository.findAll();
-        long softwareCount = softwareRepository.count();
-
-        SoftwareListResponse response = new SoftwareListResponse(softwareList, softwareCount);
-        return ResponseEntity.ok(response);
-    }
-
-    // create class that combine count and software list
-    public static class SoftwareListResponse {
-        private List<Software> softwareList;
-        private long softwareCount;
-
-        public SoftwareListResponse(List<Software> softwareList, long softwareCount) {
-            this.softwareList = softwareList;
-            this.softwareCount = softwareCount;
-        }
-
-        public List<Software> getSoftwareList() {
-            return softwareList;
-        }
-
-        public long getSoftwareCount() {
-            return softwareCount;
-        }
+    public List<Software> getAllSoftware() {
+        return softwareRepository.findAll();
     }
 
     // get software by id
@@ -76,6 +55,18 @@ public class SoftwareController {
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @PostMapping("/add-software")
     public ResponseEntity<String> addSoftware(@Validated @RequestBody Software software) throws ParseException {
+
+        // specify the time zone ("Europe/Athens")
+        ZoneId zoneId = ZoneId.of("Europe/Athens");
+
+        // use LocalDateTime to get the current date and time in the specified time zone
+        LocalDateTime registrationDateTime = LocalDateTime.now(zoneId);
+
+        // convert LocalDateTime to Date
+        Date registrationDate = Date.from(registrationDateTime.atZone(zoneId).toInstant());
+
+        // set the current date as registration date
+        software.setRegistrationDate(registrationDate);
 
         // save the software
         softwareRepository.save(software);

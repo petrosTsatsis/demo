@@ -14,6 +14,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,31 +37,8 @@ public class PurchaseController {
     // get all purchases
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
     @GetMapping("")
-    public ResponseEntity<PurchaseListResponse> getAllPurchases() {
-        List<Purchase> purchases = purchaseRepository.findAll();
-        long purchaseCount = purchaseRepository.count();
-
-        PurchaseListResponse response = new PurchaseListResponse(purchases, purchaseCount);
-        return ResponseEntity.ok(response);
-    }
-
-    // create class that combine count and purchase list
-    public static class PurchaseListResponse {
-        private List<Purchase> purchases;
-        private long purchaseCount;
-
-        public PurchaseListResponse(List<Purchase> purchases, long purchaseCount) {
-            this.purchases = purchases;
-            this.purchaseCount = purchaseCount;
-        }
-
-        public List<Purchase> getPurchases() {
-            return purchases;
-        }
-
-        public long getPurchaseCount() {
-            return purchaseCount;
-        }
+    public List<Purchase> getAllPurchases() {
+        return purchaseRepository.findAll();
     }
 
     // get purchase by id
@@ -90,6 +71,18 @@ public class PurchaseController {
         if (optionalSoftware.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Software not found. Purchase not created.");
         }
+
+        // specify the time zone ("Europe/Athens")
+        ZoneId zoneId = ZoneId.of("Europe/Athens");
+
+        // use LocalDateTime to get the current date and time in the specified time zone
+        LocalDateTime registrationDateTime = LocalDateTime.now(zoneId);
+
+        // convert LocalDateTime to Date
+        Date registrationDate = Date.from(registrationDateTime.atZone(zoneId).toInstant());
+
+        // set the current date as registration date
+        purchase.setRegistrationDate(registrationDate);
 
         // both customer and software exist, proceed with creating the purchase
         Customer customer = optionalCustomer.get();

@@ -65,6 +65,12 @@ public class Software {
     @NotBlank(message = "This field cannot be blank.")
     private String developer;
 
+    @Column(name = "registration_date")
+    @Temporal(TemporalType.DATE)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date registrationDate;
+
     // customer relationship field
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
@@ -199,6 +205,14 @@ public class Software {
         this.developer = developer;
     }
 
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     public List<Customer> getCustomers() {
         return customers;
     }
@@ -232,6 +246,7 @@ public class Software {
     }
 
     // define toString method
+
     @Override
     public String toString() {
         return "Software{" +
@@ -246,6 +261,7 @@ public class Software {
                 ", supportedPlatforms='" + supportedPlatforms + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", developer='" + developer + '\'' +
+                ", registrationDate=" + registrationDate +
                 '}';
     }
 }

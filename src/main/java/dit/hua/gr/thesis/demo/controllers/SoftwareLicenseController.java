@@ -15,6 +15,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +73,18 @@ public class SoftwareLicenseController {
         if (optionalSoftware.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Software not found. License not created.");
         }
+
+        // specify the time zone ("Europe/Athens")
+        ZoneId zoneId = ZoneId.of("Europe/Athens");
+
+        // use LocalDateTime to get the current date and time in the specified time zone
+        LocalDateTime registrationDateTime = LocalDateTime.now(zoneId);
+
+        // convert LocalDateTime to Date
+        Date registrationDate = Date.from(registrationDateTime.atZone(zoneId).toInstant());
+
+        // set the current date as registration date
+        softwareLicense.setRegistrationDate(registrationDate);
 
         Customer customer = optionalCustomer.get();
         Software software = optionalSoftware.get();

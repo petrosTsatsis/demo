@@ -1,14 +1,18 @@
 package dit.hua.gr.thesis.demo.controllers;
 
 import dit.hua.gr.thesis.demo.entities.Event;
+import dit.hua.gr.thesis.demo.entities.User;
 import dit.hua.gr.thesis.demo.repositories.EventRepository;
+import dit.hua.gr.thesis.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +23,35 @@ public class EventController {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // get all events
     @GetMapping("")
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
-    public List<Event> getAll(){
-        return eventRepository.findAll();
+    public List<Event> getAll(Authentication authentication){
+        // extract the currently authenticated user's username from Authentication
+        String username = authentication.getName();
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if(optionalUser.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "User not found !"
+            );
+        }
+
+        User user = optionalUser.get();
+        ArrayList<Event> allEvents = new ArrayList<>();
+        // fetch the current user's events
+        for (Event event : user.getEvents()) {
+            allEvents.add(event);
+        }
+        // fetch all the update events
+        for(Event event : eventRepository.findAll()){
+            if(event.getTitle().equalsIgnoreCase("Update time !")){
+                allEvents.add(event);
+            }
+        }
+        return allEvents;
     }
 
     // get event by id

@@ -36,6 +36,12 @@ public class SoftwareLicense {
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date expirationDate;
 
+    @Column(name = "registration_date")
+    @Temporal(TemporalType.DATE)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date registrationDate;
+
     // customer relationship field
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "customer_id")
@@ -101,6 +107,14 @@ public class SoftwareLicense {
         this.expirationDate = expirationDate;
     }
 
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
@@ -119,6 +133,7 @@ public class SoftwareLicense {
 
     // define toString method
 
+
     @Override
     public String toString() {
         return "SoftwareLicense{" +
@@ -127,6 +142,7 @@ public class SoftwareLicense {
                 ", status='" + status + '\'' +
                 ", activationDate=" + activationDate +
                 ", expirationDate=" + expirationDate +
+                ", registrationDate=" + registrationDate +
                 '}';
     }
 }

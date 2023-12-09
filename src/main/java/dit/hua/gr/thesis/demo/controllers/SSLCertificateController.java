@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.cert.Certificate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +65,19 @@ public class SSLCertificateController {
                     HttpStatus.NOT_FOUND, "Customer with ID : " + customer_id + " not found !"
             );
         }
+
+        // specify the time zone ("Europe/Athens")
+        ZoneId zoneId = ZoneId.of("Europe/Athens");
+
+        // use LocalDateTime to get the current date and time in the specified time zone
+        LocalDateTime registrationDateTime = LocalDateTime.now(zoneId);
+
+        // convert LocalDateTime to Date
+        Date registrationDate = Date.from(registrationDateTime.atZone(zoneId).toInstant());
+
+        // set the current date as registration date
+        sslCertificate.setRegistrationDate(registrationDate);
+
         Customer customer = optionalCustomer.get();
 
         sslCertificate.setCustomer(customer);

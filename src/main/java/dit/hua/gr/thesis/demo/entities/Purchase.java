@@ -41,6 +41,12 @@ public class Purchase {
     @JoinColumn(name = "software_id")
     private Software software;
 
+    @Column(name = "registration_date")
+    @Temporal(TemporalType.DATE)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date registrationDate;
+
     // define constructors
 
     public Purchase(double price, Date purchaseDate, Customer customer, Software software) {
@@ -78,6 +84,14 @@ public class Purchase {
         this.purchaseDate = purchaseDate;
     }
 
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
@@ -95,6 +109,7 @@ public class Purchase {
     }
 
     // define toString method
+
     @Override
     public String toString() {
         return "Purchase{" +
@@ -103,6 +118,7 @@ public class Purchase {
                 ", purchaseDate=" + purchaseDate +
                 ", customer=" + customer +
                 ", software=" + software +
+                ", registrationDate=" + registrationDate +
                 '}';
     }
 }

@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class NotificationScheduler {
@@ -35,7 +32,7 @@ public class NotificationScheduler {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    @Scheduled(cron = "0 0 0 * * ?", zone = "Europe/Athens")// Runs at midnight (12:00 AM) every day
+    @Scheduled(cron = "0 0 20 * * ?")// Runs at midnight (12:00 AM) every day
     @Transactional
     public void sendReminderNotification() throws ParseException {
 
