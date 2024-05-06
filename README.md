@@ -1,4 +1,4 @@
-This is CRM (Customer Relationship Management) Web Application. It has two parts, backend and frontend,
+This is a CRM (Customer Relationship Management) Web Application. It has two parts, backend and frontend,
 backend is implemented using Java 17, Springboot, Postgresql, Hibernate and authentication-authorization using JWT,
 while the frontend part is implemented using React, HTML, CSS and Bootstrap.
 
