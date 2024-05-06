@@ -43,7 +43,7 @@ VALUES ('Company', 'Innovative Technologies', 'example@innovative.com', '9876543
 
 -- Company 3
 INSERT INTO customers (dtype, name, email, phone_number, registration_date, annual_revenue, employees_number, industry, website, description)
-VALUES ('Company', 'Creative Solutions', 'example@solutions.com', '5551234565', CURRENT_DATE, 1500000, 35, 'Creative Services', 'https://www.creative.com', 'Creative Solutions Ltd offers a wide range of creative services including graphic design, branding, and marketing strategies.');
+VALUES ('Company', 'Creative Solutions', 'example@creative.com', '5551234565', CURRENT_DATE, 1500000, 35, 'Creative Services', 'https://www.creative.com', 'Creative Solutions Ltd offers a wide range of creative services including graphic design, branding, and marketing strategies.');
 
 
 
