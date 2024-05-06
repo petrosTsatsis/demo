@@ -1,0 +1,1362 @@
+/* Backround Color*/
+
+body {
+  background-color: rgb(219, 213, 201) !important;
+  margin-bottom: 30px !important;
+}
+
+/* --------- */
+/* UnAuthenticated Navigation Bar*/
+/* --------- */
+
+.navbar .container-md .nav-item .nav-link {
+  color: white !important;
+  position: relative;
+}
+
+.nav-link {
+  display: block;
+  padding: 0 !important;
+  font-size: var(--bs-nav-link-font-size);
+  font-weight: var(--bs-nav-link-font-weight);
+  color: var(--bs-nav-link-color);
+  text-decoration: none;
+  background: 0 0;
+  border: 0;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out;
+}
+
+.navbar .container-md .navbar-toggler-icon {
+  background-color: transparent;
+}
+
+.navbar .container-md .navbar-toggler:hover .navbar-toggler-icon {
+  background-color: transparent;
+}
+
+/* --------- */
+/* Unauthenticated Home section */
+/* --------- */
+
+.home-header {
+  padding-top: 80px !important;
+}
+
+.home-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  background-position: top center;
+  background-repeat: no-repeat;
+  padding-bottom: 30px !important;
+  padding-top: 30px !important;
+  max-height: 80vh;
+}
+.home-content {
+  padding: 9rem 0 2rem !important;
+  color: whitesmoke;
+  text-align: left;
+}
+
+.heading {
+  font-size: 2.4em !important;
+  padding-left: 50px !important;
+}
+
+.heading-name {
+  font-size: 2.5em !important;
+  padding-left: 45px !important;
+}
+
+.main-name {
+  color: #313949;
+}
+
+.Typewriter__wrapper {
+  font-size: 2.2em !important;
+  color: #313949 !important;
+  font-weight: 600 !important;
+}
+.Typewriter__cursor {
+  font-size: 2.4em !important;
+  color: #313949 !important;
+}
+
+.heading-name {
+  font-size: 4rem !important;
+}
+
+.starter {
+  --bs-btn-color: white !important;
+  --bs-btn-hover-color: white !important;
+  --bs-btn-hover-bg: transparent !important;
+  --bs-btn-hover-border-color: #313949 !important;
+  --bs-btn-focus-shadow-rgb: 255, 193, 7;
+  --bs-btn-active-color: white !important;
+  --bs-btn-active-bg: #313949 !important;
+  --bs-btn-active-border-color: #313949 !important;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #313949 !important;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #313949 !important;
+  --bs-gradient: none;
+  border: 2px solid #313949 !important;
+  background-color: #313949 !important;
+}
+
+.starter:hover {
+  color: #313949 !important;
+  background-color: transparent !important;
+  border-color: #313949 !important;
+}
+/* --------- */
+/* Authenticated Navigation Bar */
+/* --------- */
+
+.navbar-toggler {
+  padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
+  font-size: var(--bs-navbar-toggler-font-size);
+  line-height: 1;
+  color: transparent !important;
+  background-color: transparent;
+  border: 2px solid white !important;
+  border-radius: var(--bs-navbar-toggler-border-radius);
+  transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+.navbar-toggler:hover {
+  background-color: rgba(255, 255, 255, 0.295);
+  transform: scale(1.1);
+}
+
+.nav-link:hover {
+  cursor: pointer;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* --------- */
+/* Footer */
+/* --------- */
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.footer h3 {
+  font-size: 1em;
+  color: #313949 !important;
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+}
+
+.footer-icons {
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+  padding: 0 !important;
+}
+
+.social-icons {
+  display: inline-block !important;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/* --------- */
+/* Contact us */
+/* --------- */
+
+.contact-us-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.image-container {
+  flex: 1;
+  margin-right: 15%;
+  margin-top: 6%;
+  text-align: right;
+}
+
+img {
+  width: 440px;
+  height: 80%;
+}
+
+.text-container-contact {
+  flex: 1;
+  text-align: center;
+  background-color: #313949;
+  border-radius: 50px;
+  box-shadow: 0 4px 5px 3px #313949 !important;
+  max-width: 60%;
+  margin-left: 15%;
+  height: auto;
+  padding: 2%;
+  margin-top: 5%;
+}
+
+.text-container-contact h1 {
+  font-size: 4em !important;
+  font-family: "Raleway, serif" !important;
+  color: aliceblue;
+}
+
+.text-container-contact p {
+  font-size: 1.5em !important;
+  font-family: "Raleway, serif" !important;
+  color: aliceblue;
+}
+
+.contact-info p {
+  margin: 0;
+  user-select: all;
+  cursor: text;
+  position: relative;
+  z-index: 1;
+}
+
+/* --------- */
+/* About us */
+/* --------- */
+
+.about-us-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.about-image {
+  flex: 1;
+  margin-left: 15%;
+  margin-top: 6%;
+  text-align: left;
+}
+
+img {
+  width: 440px;
+  height: 80%;
+}
+
+.text-container-about {
+  flex: 1;
+  text-align: center;
+  background-color: #313949;
+  border-radius: 50px;
+  box-shadow: 0 4px 5px 3px #313949 !important;
+  max-width: 60%;
+  margin-right: 15%;
+  height: auto;
+  padding: 2%;
+  margin-top: 5%;
+}
+
+.text-container-about h1 {
+  font-size: 4em !important;
+  font-family: "Raleway, serif" !important;
+  color: aliceblue;
+}
+
+.text-container-about p {
+  font-size: 1.5em !important;
+  font-family: "Raleway, serif" !important;
+  color: aliceblue;
+}
+
+/* --------- */
+/* Authenticated Home section */
+/* --------- */
+
+.calendar-button {
+  --bs-btn-color: white !important;
+  --bs-btn-hover-color: white !important;
+  --bs-btn-hover-bg: transparent !important;
+  --bs-btn-hover-border-color: #313949 !important;
+  --bs-btn-focus-shadow-rgb: 255, 193, 7;
+  --bs-btn-active-color: white !important;
+  --bs-btn-active-bg: #313949 !important;
+  --bs-btn-active-border-color: #313949 !important;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #313949 !important;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #313949 !important;
+  --bs-gradient: none;
+  border: 2px solid #313949 !important;
+  background-color: #313949 !important;
+  transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+.calendar-button.btn.btn-warning:hover {
+  transform: scale(1.1);
+}
+
+.home.w-20 {
+  background-color: whitesmoke !important;
+  color: #313949;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Additional styles for home-cards button */
+.home-cards.btn.btn-primary {
+  background-color: #b84823 !important;
+  border: 2px solid #b84823 !important;
+  transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+.home-cards.btn.btn-primary:hover {
+  background-color: #d38d79 !important;
+  transform: scale(1.1);
+}
+
+/* Additional styles for home-tables */
+
+.table-container {
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.home.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+  scrollbar-color: #313949 lightgrey;
+}
+
+.home.table th,
+.home.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #d1d3d7;
+  background-color: whitesmoke;
+  color: #313949;
+  --bs-table-hover-bg: #d1d3d7;
+}
+
+.home.table thead th {
+  border-top: 1px solid whitesmoke;
+  border-bottom: 2px solid whitesmoke;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: whitesmoke;
+}
+
+.home.table {
+  overflow-y: hidden;
+  height: 425px;
+  display: flex;
+  flex-direction: column;
+}
+
+.home.table tbody {
+  overflow-y: auto;
+}
+
+.home.table tfoot {
+  margin-top: auto;
+}
+
+.home.table tr {
+  display: table;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home.table tbody + tbody {
+  border-top: 2px solid #d1d3d7;
+}
+
+.table-task-management {
+  position: sticky;
+  bottom: 0;
+  background-color: whitesmoke;
+  z-index: 1;
+}
+
+.home.table th,
+.home.table td {
+  width: 25%;
+}
+
+.tasks-in-progress {
+  font-size: 18px;
+}
+
+.carousel-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+span.carousel-control-next-icon,
+span.carousel-control-prev-icon {
+  width: 1.1rem;
+}
+
+.form-select.custom-select {
+  width: 180px;
+}
+
+.form-select.custom-select {
+  cursor: pointer;
+  background-color: #313949;
+}
+
+/* Home Monthly Accomplishments Card */
+.accomplishments {
+  background-color: transparent !important;
+  color: #313949 !important;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+  height: 420px !important;
+}
+
+.child-home-card {
+  background-color: #313949 !important;
+  width: 300px !important;
+  height: 220px !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.tooltip {
+  background-color: #737f97 !important;
+  border-radius: 50px !important;
+}
+
+/* Activity Table */
+
+.activity.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  max-width: 100%;
+  background-color: #313949 !important;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+  scrollbar-color: #68799b #313949;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.activity.table th,
+.activity.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #d1d3d7;
+  background-color: #313949 !important;
+  color: white;
+  --bs-table-hover-bg: rgb(104, 121, 155) !important;
+}
+
+.activity.table thead th {
+  border-top: 1px solid #313949;
+  border-bottom: 2px solid #313949;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #313949 !important;
+}
+
+.activity.table {
+  overflow-y: hidden;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity.table tbody {
+  overflow-y: auto;
+}
+
+.activity.table tr {
+  display: table;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.activity.table tbody + tbody {
+  border-top: 2px solid #d1d3d7;
+}
+
+.activity.table th,
+.activity.table td {
+  width: 25%;
+}
+
+/* Modal Event Table */
+
+.home.event.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  width: 800px;
+  max-width: 100%;
+  background-color: #313949 !important;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+  scrollbar-color: #313949 lightgrey;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.home.event.table th,
+.home.event.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #d1d3d7;
+  border-top: 1px solid #313949;
+  background-color: #313949 !important;
+  color: white;
+  --bs-table-hover-bg: rgb(79, 99, 139) !important;
+  border: none !important;
+}
+
+.home.event.table thead th {
+  border-top: 1px solid #313949;
+  border-bottom: 2px solid #313949;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #313949 !important;
+}
+
+.home.event.table {
+  overflow-y: hidden;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.home.event.table tbody {
+  overflow-y: auto;
+}
+
+.home.event.table tr {
+  display: table;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home.event.table tbody + tbody {
+  border-top: 2px solid #d1d3d7;
+}
+
+.home.event.table th,
+.home.event.table td {
+  width: 25%;
+}
+
+/* Modal current purchases hover */
+
+.hover-gold:hover {
+  color: #daa520 !important;
+}
+
+.hover-red:hover {
+  color: orangered !important;
+}
+
+/* Delete-icon */
+
+.bin {
+  transition: transform 0.2s ease-in-out;
+}
+
+.bin:hover {
+  transform: translateY(-3px) !important;
+}
+
+/* Modal-Delete */
+
+.delete-modal-style {
+  inset: 40px;
+  box-shadow: 0px 1px 5px 5px #b41928;
+  background: #091122;
+  overflow: auto;
+  border-radius: 40px;
+  outline: none;
+  padding: 20px;
+  width: 500px !important;
+  margin: auto;
+}
+
+/* Calendar */
+
+.rbc-calendar {
+  margin-top: 30px !important;
+}
+
+.rbc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  background-color: #b84823 !important;
+  border-radius: 10px !important;
+}
+
+.rbc-toolbar-label {
+  text-align: right !important;
+  font-weight: bold !important;
+  color: white !important;
+}
+
+.rbc-btn-group button {
+  background-color: #b84823 !important;
+  color: white !important;
+  border: none !important;
+}
+
+.rbc-btn-group {
+  margin-left: 5px !important;
+}
+
+.rbc-btn-group button:hover {
+  background-color: #b84823 !important;
+}
+
+.rbc-toolbar button:active,
+.rbc-toolbar button.rbc-active {
+  background-image: none;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  background-color: #be7b65 !important;
+  border-color: #adadad;
+}
+
+.rbc-month-view {
+  position: relative;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  height: 100%;
+  background-color: #313949 !important;
+}
+
+.rbc-day-bg.rbc-today {
+  background-color: #8791a7 !important;
+  color: white !important;
+}
+
+.rbc-day-bg.rbc-off-range-bg {
+  background-color: #586278 !important;
+  color: white !important;
+}
+
+.rbc-event {
+  width: 150px !important;
+  border-radius: 50px !important;
+  margin-bottom: 7px !important;
+  height: 20px !important;
+  display: flex;
+  align-items: center !important;
+  margin-left: 5px !important;
+}
+
+.rbc-button-link.rbc-show-more {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+.rbc-week-view {
+  background-color: #313949 !important;
+}
+
+.rbc-time-view {
+  background-color: #313949 !important;
+}
+
+.rbc-day-slot .rbc-events-container {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+  top: 0;
+}
+
+.rbc-day-slot.rbc-time-column.rbc-now.rbc-today {
+  background-color: #586278 !important;
+}
+
+.rbc-header.rbc-today {
+  background-color: #586278 !important;
+}
+
+.rbc-time-view {
+  box-sizing: border-box;
+  min-height: 20px;
+  background-color: #313949 !important;
+}
+
+.rbc-label {
+  color: white !important;
+  font-weight: bold !important;
+  margin-right: 5px !important;
+}
+
+.rbc-events-container {
+  cursor: pointer !important;
+}
+
+/* Calendar - Form - Date picker*/
+
+.form-control[type="time"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.form-control[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer !important;
+}
+
+.form-control[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(100%) !important;
+}
+
+.form-control[type="time"]::-webkit-datetime-edit-hour-field:focus,
+.form-control[type="time"]::-webkit-datetime-edit-minute-field:focus {
+  background-color: transparent !important;
+  color: black !important;
+}
+
+.form-control[type="time"] {
+  background-color: whitesmoke !important;
+  border-color: whitesmoke !important;
+  color: black !important;
+  width: 120px !important;
+}
+
+.form-control[type="time"]::-webkit-calendar-picker-indicator {
+  color: black !important;
+}
+
+.calendar-form {
+  display: flex;
+  align-items: center;
+  background-color: #313949;
+  width: 900px;
+  height: 600px;
+  justify-content: center;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+  margin-top: 15px;
+}
+
+.react-datepicker,
+.react-datepicker__current-month,
+.react-datepicker__day-names,
+.react-datepicker__week,
+.react-datepicker__month,
+.react-datepicker__quarter,
+.react-datepicker__year-container {
+  border-radius: 25px !important;
+}
+
+.react-datepicker__header {
+  background-color: white !important;
+  border: none !important;
+  border-radius: 25px !important;
+}
+
+.react-datepicker__day--selected {
+  border-radius: 50% !important;
+  background-color: rgb(140, 191, 64) !important;
+}
+
+.react-datepicker__input-container input {
+  margin-left: 5px !important;
+  border-radius: 50px !important;
+  background-color: whitesmoke !important;
+  color: black !important;
+  text-align: center !important;
+  border: 1px solid whitesmoke !important;
+}
+
+/* Calendar - Add Appointment Form - Event Display*/
+
+.event-input-title {
+  background-color: whitesmoke;
+  border-radius: 50px;
+  color: black;
+  border: 1px solid white;
+  font-weight: bold;
+}
+
+.event-input {
+  background-color: whitesmoke;
+  border-radius: 50px;
+  color: black;
+  border: 1px solid whitesmoke;
+}
+
+.form-control-notes {
+  background-color: whitesmoke;
+  border-radius: 30px;
+  color: black;
+  border: 1px solid whitesmoke;
+}
+
+.form-control-call {
+  background-color: whitesmoke;
+  border-radius: 50px;
+  color: black;
+  border: 1px solid whitesmoke;
+}
+
+.css-1hb7zxy-IndicatorsContainer {
+  max-height: 100px;
+  cursor: pointer !important;
+}
+
+.css-qbdosj-Input {
+  width: 3px !important;
+}
+
+.css-1p3m7a8-multiValue {
+  background-color: #313949 !important;
+  color: white !important;
+  border-radius: 50px !important;
+}
+
+.css-wsp0cs-MultiValueGeneric {
+  color: white !important;
+}
+
+.danger-icon {
+  color: red !important;
+  font-size: 18px;
+}
+
+.appointment.btn.btn-outline-light {
+  background-color: transparent !important;
+  border: 2px solid #b84823 !important;
+  color: black !important;
+  transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+.appointment.btn.btn-outline-light:hover {
+  background-color: #b84823 !important;
+  color: white !important;
+}
+
+.event.btn.btn-outline-light {
+  background-color: transparent !important;
+  border: 2px solid rgb(140, 191, 64) !important;
+  color: black !important;
+  transition: background-color 0.3s ease, transform 0.3s ease !important;
+  margin-left: 10px !important;
+}
+
+.event.btn.btn-outline-light:hover {
+  background-color: rgb(140, 191, 64) !important;
+  color: white !important;
+}
+
+.calendar-event-form {
+  display: flex;
+  align-items: center;
+  background-color: #313949;
+  width: 600px;
+  height: 360px;
+  justify-content: center;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+  margin-top: 15px;
+}
+
+.calendar-event-details {
+  display: flex;
+  align-items: center;
+  background-color: #313949;
+  width: 600px;
+  height: 500px;
+  justify-content: center;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+  margin-top: 15px;
+}
+
+.event-details-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+}
+
+.popover-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.blue-circle {
+  width: 20px;
+  height: 20px;
+  background-color: goldenrod;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Appointment Display*/
+
+.appointment.card {
+  width: 700px !important;
+  height: 550px !important;
+  background-color: #313949 !important;
+  color: white !important;
+  border-radius: 35px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.customers-mini.card,
+.contacts-mini.card {
+  width: 245px !important;
+  background-color: #313949 !important;
+  color: white !important;
+  height: 475px !important;
+  overflow: hidden;
+  border-radius: 10%;
+}
+
+.customers-mini.card .card-body,
+.contacts-mini.card .card-body {
+  width: calc(100% - 20px);
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-color: whitesmoke #313949;
+  padding-right: 20px;
+}
+
+.customers-mini.card {
+  margin-right: 30px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.contacts-mini.card {
+  margin-left: 30px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.appointment-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.customer-item,
+.contact-item {
+  margin-bottom: 5px;
+}
+
+.contact-list,
+.customer-list {
+  margin-top: 20px;
+}
+
+.appointment-detail-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  border-radius: 50px;
+  text-align: center;
+  border: 1px solid whitesmoke;
+}
+
+.card-title-event-display {
+  text-align: center;
+  background-color: #efa78f;
+  border-radius: 50px;
+  margin-bottom: 40px;
+}
+
+.event-buttons-and-contact {
+  height: 545px;
+}
+
+.event-buttons {
+  margin-bottom: 30px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.custom-tooltip {
+  --bs-tooltip-bg: #313949 !important;
+  --bs-tooltip-color: var(--bs-white) !important;
+}
+
+/* Components display table */
+
+.components.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  background-color: #313949;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+  scrollbar-color: #313949 lightgrey;
+  box-shadow: 1px 1px 5px 3px rgba(0, 0, 0, 0.5);
+}
+
+.components.table thead th {
+  border-top: 1px solid #313949;
+  border-bottom: 2px solid #313949;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.components.table tbody {
+  overflow-y: auto;
+}
+
+.components.table tfoot {
+  margin-top: auto;
+}
+
+.components.table tr {
+  display: table;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.components.table {
+  overflow-y: hidden;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.components.table th,
+.components.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #313949;
+  background-color: #313949;
+  color: white;
+  --bs-table-hover-bg: rgb(76, 101, 151) !important;
+}
+
+.components.table tbody + tbody {
+  border-top: 2px solid #d1d3d7;
+}
+
+.components-task-management {
+  position: sticky;
+  bottom: 0;
+  background-color: whitesmoke;
+  z-index: 1;
+}
+
+.components.table th,
+.components.table td {
+  width: 20%;
+  text-align: center;
+}
+
+.form-check-input {
+  cursor: pointer;
+}
+.form-check-input:checked {
+  background-color: #78ba43 !important;
+  border-color: #78ba43 !important;
+}
+
+.form-check-input[type="checkbox"] {
+  border-radius: 0.25em;
+  box-shadow: none !important;
+  border: 1px solid #7caa56 !important;
+}
+
+.accordion-button {
+  box-shadow: none !important;
+}
+.accordion-button.collapsed {
+  box-shadow: none !important;
+  background-color: rgb(76, 101, 151) !important;
+  border: none !important;
+  border-radius: 15px !important;
+}
+
+.accordion-item {
+  border-radius: 15px !important;
+  border: none !important;
+}
+
+.accordion-body {
+  background-color: #313949 !important;
+  border-radius: 15px !important;
+}
+
+.accordion-collapse.collapse.show {
+  background-color: #313949 !important;
+}
+
+.accordion-item:last-of-type {
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Edit Customer */
+
+.customer-form {
+  background-color: #313949;
+  width: 700px;
+  height: 450px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.custom-header-container {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.year-picker,
+.month-picker {
+  margin: 0 10px;
+  border: 1px solid #313949;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: rgb(76, 101, 151) !important;
+  box-shadow: none !important;
+  outline: none !important;
+  cursor: pointer;
+}
+
+/* Customer Details */
+
+.customer-detail-fields {
+  background-color: transparent;
+  border-radius: 10px;
+  color: white;
+  border: 2px solid white;
+}
+
+.customer-card {
+  background-color: #313949 !important;
+  color: white !important;
+}
+
+.rw-picker-btn.rw-btn {
+  background-color: transparent !important;
+  border-radius: 10px !important;
+  border: 2px solid whitesmoke !important;
+  margin-right: 5px !important;
+}
+
+.rw-widget-input.rw-input {
+  background-color: whitesmoke;
+  border-radius: 50px;
+  color: black;
+  border: 1px solid whitesmoke;
+  margin-right: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Add Company */
+
+.company-form {
+  background-color: #313949;
+  width: 1000px;
+  height: 580px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.container-lg {
+  background-color: #313949;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Add Contacts Modal */
+.add-contact.container {
+  background-color: #313949 !important;
+  border-radius: 10px !important;
+  margin-top: "30px" !important;
+}
+
+.add-contact-form {
+  margin-top: "30px" !important;
+}
+
+/* Add SSL Certificate Button */
+
+.ssl.btn-outline-info {
+  --bs-btn-color: #2a8ffa;
+  --bs-btn-border-color: #2a8ffa;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #2a8ffa;
+  --bs-btn-hover-border-color: #2a8ffa;
+  --bs-btn-focus-shadow-rgb: 13, 202, 240;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #2a8ffa;
+  --bs-btn-active-border-color: #2a8ffa;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #2a8ffa;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #2a8ffa;
+  --bs-gradient: none;
+}
+
+/* Modal-Remove */
+
+.remove-modal-style {
+  inset: 40px;
+  box-shadow: 0px 1px 5px 5px orange;
+  background: #091122;
+  overflow: auto;
+  border-radius: 40px;
+  outline: none;
+  padding: 20px;
+  width: 500px !important;
+  margin: auto;
+}
+
+/* Add SSL Certificate Modal */
+
+.certificate-form {
+  background-color: #313949;
+  width: 400px;
+  height: 400px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.add-certificate-form {
+  margin-top: "30px" !important;
+}
+
+/* Add Software form */
+
+.software-text {
+  border: 1px solid #313949;
+  background-color: #313949;
+  border-radius: 50px;
+  box-shadow: none !important;
+  outline: none !important;
+  color: white;
+}
+
+.custom-number-picker .rw-widget-input.rw-input {
+  border: 1px solid #313949 !important;
+  background-color: #313949 !important;
+  border-radius: 50px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: white !important;
+}
+
+.custom-number-picker .rw-widget-input {
+  height: 44px;
+}
+
+.software-date {
+  width: 300px !important;
+  height: 50px !important;
+  background-color: #313949 !important;
+}
+
+.software-date.react-datepicker-ignore-onclickoutside {
+  background-color: #313949 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input.software-date {
+  background-color: #313949 !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* Add Purchase form */
+
+.purchase-date {
+  width: 200px !important;
+  padding: 3px !important;
+}
+
+/* Dislay Notification */
+
+.notification-display {
+  background-color: transparent;
+  width: 500px;
+  height: 300px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+  border: 2px solid black;
+}
+
+/* Birth date contact field */
+
+.contact-birthdate {
+  width: 200px !important;
+  padding: 4px !important;
+  background-color: #313949 !important;
+}
+
+.contact-birthdate.react-datepicker-ignore-onclickoutside {
+  background-color: #313949 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input.contact-birthdate {
+  background-color: #313949 !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* Due date task field */
+
+.due-date {
+  width: 250px !important;
+  padding: 3px !important;
+}
+
+.CircularProgressbar-trail {
+  stroke: rgba(139, 139, 139, 0.301) !important;
+}
