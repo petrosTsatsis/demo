@@ -1,44 +1,49 @@
-import React, {Component} from "react";
-import {BrowserRouter as Router, Navigate, Route, Routes,} from "react-router-dom";
-import AuthService from "./services/auth-service";
-import Login from "./components/login";
-import Register from "./components/register";
-import UnauthenticatedNavbar from "./components/unauthenticated-navbar";
-import AuthenticatedNavbar from "./components/authenticated-navbar";
-import UnauthenticatedHome from "./components/unauthenticated-home";
-import AuthenticatedHome from "./components/authenticated-home";
+import React, { Component } from "react";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import AboutUs from "./components/about";
-import ContactUs from "./components/contact-us";
+import AuthenticatedHome from "./components/authenticated-home";
+import AuthenticatedNavbar from "./components/authenticated-navbar";
 import Calendar from "./components/calendar";
-import AppointmentDetailsPage from "./components/events-components/appointment-details-page";
-import ListCustomers from "./components/customer-components/list-customers";
-import AddCustomer from "./components/customer-components/add-customer";
-import DetailsCustomer from "./components/customer-components/details-customer";
-import ListCompanies from "./components/company-components/list-companies";
 import AddCompany from "./components/company-components/add-company";
 import DetailsCompany from "./components/company-components/details-company";
-import ListSoftware from "./components/software-components/list-software";
-import AddSoftware from "./components/software-components/add-software";
-import DetailsSoftware from "./components/software-components/details.software";
-import ListPurchases from "./components/purchase-components/list-purchases";
-import AddPurchase from "./components/purchase-components/add-purchase";
-import DetailsPurchase from "./components/purchase-components/details-purchase";
-import DetailsNotification from "./components/notification-components/details-notification";
-import ListContacts from "./components/contact-components/list-contacts";
+import ListCompanies from "./components/company-components/list-companies";
 import AddContact from "./components/contact-components/add-contact";
 import DetailsContact from "./components/contact-components/details-contact";
-import ListTasks from "./components/task-components/list-tasks";
+import ListContacts from "./components/contact-components/list-contacts";
+import ContactUs from "./components/contact-us";
+import AddCustomer from "./components/customer-components/add-customer";
+import DetailsCustomer from "./components/customer-components/details-customer";
+import ListCustomers from "./components/customer-components/list-customers";
+import ListDashboards from "./components/dashboard-components/list-dashboards";
+import AppointmentDetailsPage from "./components/events-components/appointment-details-page";
+import ListTotalContacts from "./components/list-total-contacts";
+import ListUsers from "./components/list-users";
+import Login from "./components/login";
+import DetailsNotification from "./components/notification-components/details-notification";
+import UserDetails from "./components/profile-components/details-user";
+import Profile from "./components/profile-components/profile";
+import AddPurchase from "./components/purchase-components/add-purchase";
+import DetailsPurchase from "./components/purchase-components/details-purchase";
+import ListPurchases from "./components/purchase-components/list-purchases";
+import Register from "./components/register";
+import AddSoftware from "./components/software-components/add-software";
+import DetailsSoftware from "./components/software-components/details.software";
+import ListSoftware from "./components/software-components/list-software";
+import DetailsSoftwareLicense from "./components/software-license-components/details-software-license";
+import ListSoftwareLicenses from "./components/software-license-components/list-software-licenses";
+import DetailsSSLCertificate from "./components/ssl-certificate-components/details-ssl-certificate";
+import ListSSLCertificates from "./components/ssl-certificate-components/list-ssl-certificates";
 import AddTask from "./components/task-components/add-task";
 import DetailsTask from "./components/task-components/details-task";
-import ListSoftwareLicenses from "./components/software-license-components/list-software-licenses";
-import DetailsSoftwareLicense from "./components/software-license-components/details-software-license";
-import ListSSLCertificates from "./components/ssl-certificate-components/list-ssl-certificates";
-import DetailsSSLCertificate from "./components/ssl-certificate-components/details-ssl-certificate";
-import ListDashboards from "./components/dashboard-components/list-dashboards";
-import Profile from "./components/profile-components/profile";
-import ListUsers from "./components/list-users";
-import UserDetails from "./components/profile-components/details-user";
-import ListTotalContacts from "./components/list-total-contacts";
+import ListTasks from "./components/task-components/list-tasks";
+import UnauthenticatedHome from "./components/unauthenticated-home";
+import UnauthenticatedNavbar from "./components/unauthenticated-navbar";
+import AuthService from "./services/auth-service";
 
 const ProtectedRoute = ({ element }) => {
   const currentUser = AuthService.getCurrentUser();

@@ -65,6 +65,8 @@ class CompanyService {
       }
     );
   }
+
+  // method to remove a contact from a company
   removeContact(contact) {
     return axios.delete(COMPANY_REST_API_URL + "/remove-contact", {
       data: contact,

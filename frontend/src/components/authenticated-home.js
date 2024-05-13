@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Row} from "react-bootstrap";
-import {FaBuilding, FaCalendarAlt} from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { FaBuilding, FaCalendarAlt } from "react-icons/fa";
 import AuthService from "../services/auth-service";
+import HomeActivity from "./home-components/home-activity";
 import HomeCards from "./home-components/home-cards";
 import HomeTables from "./home-components/home-tables";
-import HomeActivity from "./home-components/home-activity";
 
 const AuthenticatedHome = () => {
   const [username, setUsername] = useState(null);
@@ -14,13 +14,10 @@ const AuthenticatedHome = () => {
     if (currentUser) {
       setUsername(currentUser.username);
     }
-
   }, []);
-
 
   return (
     <Container>
-
       {/* Welcome message and Calendar button */}
 
       <Row className="align-items-center" style={{ marginTop: "30px" }}>
@@ -58,7 +55,6 @@ const AuthenticatedHome = () => {
       <HomeCards />
       <HomeTables />
       <HomeActivity />
-      
     </Container>
   );
 };

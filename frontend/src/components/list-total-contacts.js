@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "react-avatar";
-import {FaCheck, FaDatabase, FaPhone} from "react-icons/fa";
-import {GrFormNext, GrFormPrevious} from "react-icons/gr";
-import {ImBin} from "react-icons/im";
-import {IoIosAddCircleOutline, IoMdContact} from "react-icons/io";
-import {MdCancel, MdModeEdit} from "react-icons/md";
-import {TbListDetails} from "react-icons/tb";
+import { FaCheck, FaDatabase, FaPhone } from "react-icons/fa";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { ImBin } from "react-icons/im";
+import { IoIosAddCircleOutline, IoMdContact } from "react-icons/io";
+import { MdCancel, MdModeEdit } from "react-icons/md";
+import { TbListDetails } from "react-icons/tb";
 import Modal from "react-modal";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import ContactService from "../services/contact-service";
 import EditContactModal from "./contact-components/edit-contact-modal";
 
@@ -25,7 +25,7 @@ const ListTotalContacts = () => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
-    // call the method that fetches the contacts
+    // call the method that fetches the total contacts
     fetchContacts();
   }, []);
 

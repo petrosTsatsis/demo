@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "react-avatar";
-import {FaCheck, FaDatabase, FaPhone, FaUsers} from "react-icons/fa";
-import {GrFormNext, GrFormPrevious} from "react-icons/gr";
-import {ImBin} from "react-icons/im";
-import {IoIosAddCircleOutline} from "react-icons/io";
-import {MdCancel, MdModeEdit} from "react-icons/md";
-import {TbListDetails} from "react-icons/tb";
+import { FaCheck, FaDatabase, FaPhone, FaUsers } from "react-icons/fa";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { ImBin } from "react-icons/im";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { MdCancel, MdModeEdit } from "react-icons/md";
+import { TbListDetails } from "react-icons/tb";
 import Modal from "react-modal";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import UserService from "../services/user-service";
 import EditProfileModal from "./profile-components/edit-profile-modal";
 
@@ -25,7 +25,7 @@ const ListUsers = () => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
-    // call the method that fetches the customers
+    // call the method that fetches the users
     fetchUsers();
   }, []);
 
@@ -39,7 +39,7 @@ const ListUsers = () => {
     }
   }, [users]);
 
-  // fetch all the customers
+  // fetch all the users
   const fetchUsers = async () => {
     try {
       const response = await UserService.getAllUsers();
@@ -75,7 +75,7 @@ const ListUsers = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  // when a checkbox is checked open the popover with the options for the specific customer and close it when we remove the check
+  // when a checkbox is checked open the popover with the options for the specific user and close it when we remove the check
   const handleCheckboxChange = (userId) => {
     if (selectedUserId === userId) {
       console.log("Unselecting user:", userId);
@@ -96,9 +96,9 @@ const ListUsers = () => {
     setSelectedUserId(null);
   };
 
-  // method that is updating the customers array with the new edit array after a customer's edit
+  // method that is updating the users array with the new edit array after a user's edit
   const handleProfileUpdate = (updatedUser) => {
-    // find the customer
+    // find the user
     const updatedIndex = users.findIndex((user) => user.id === updatedUser.id);
 
     if (updatedIndex !== -1) {
@@ -109,27 +109,27 @@ const ListUsers = () => {
     }
   };
 
-  // view the customer's details
+  // view the user's details
   const handleViewUserDetails = () => {
     if (latestUser) {
       window.location.href = `/Users/${latestUser.id}`;
     }
   };
 
-  // view the selected customer's details
+  // view the selected user's details
   const handleViewSelectedUserDetails = () => {
     if (selectedUserId) {
       window.location.href = `/Users/${selectedUserId}`;
     }
   };
 
-  // show the delete customer confirmation modal
+  // show the delete user confirmation modal
   const deleteUser = (id) => {
     setUserToDelete(id);
     setShowDeleteModal(true);
   };
 
-  // customer delete confirmation method
+  // user delete confirmation method
   const confirmDelete = () => {
     UserService.deleteUser(userToDelete)
       .then(() => {
@@ -146,7 +146,7 @@ const ListUsers = () => {
     setShowDeleteModal(false);
   };
 
-  // method that sorts the customers by their first name
+  // method that sorts the users by their first name
   const sortByFirstName = () => {
     const sortedUsers = [...users].sort((a, b) =>
       a.fname.localeCompare(b.fname)
@@ -154,7 +154,7 @@ const ListUsers = () => {
     setUsers(sortedUsers);
   };
 
-  // method that sorts the customers by their first name
+  // method that sorts the users by their first name
   const sortByLastName = () => {
     const sortedUsers = [...users].sort((a, b) =>
       a.lname.localeCompare(b.lname)
@@ -187,7 +187,7 @@ const ListUsers = () => {
   const indexOfFirstRowUser = indexOfLastRowUser - rowsPerPageUser;
   const currentRowsUser = users.slice(indexOfFirstRowUser, indexOfLastRowUser);
   return (
-    // container that contains : add customer button, popover for customer, customers table, latest customer added
+    // container that contains : add user button, popover for user, users table, latest user added
     <div className="container-fluid">
       <div className="row" style={{ marginTop: "60px" }}>
         <div

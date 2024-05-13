@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {Col, Row} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
-import {CgDanger} from "react-icons/cg";
-import {FaCheck, FaPhone, FaUser} from "react-icons/fa";
-import {MdCancel, MdEmail, MdModeEdit} from "react-icons/md";
-import {TbFileDescription} from "react-icons/tb";
+import { CgDanger } from "react-icons/cg";
+import { FaCheck, FaPhone, FaUser } from "react-icons/fa";
+import { MdCancel, MdEmail, MdModeEdit } from "react-icons/md";
+import { TbFileDescription } from "react-icons/tb";
 import Modal from "react-modal";
 import UserService from "../../services/user-service";
 

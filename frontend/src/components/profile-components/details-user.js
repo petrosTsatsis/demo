@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "react-avatar";
-import {Card, CardBody, Col, ListGroup, Row} from "react-bootstrap";
-import {FaCheck, FaPhone} from "react-icons/fa";
-import {ImBin, ImProfile} from "react-icons/im";
-import {MdCancel, MdEmail, MdModeEdit} from "react-icons/md";
-import {TbFileDescription} from "react-icons/tb";
+import { Card, CardBody, Col, ListGroup, Row } from "react-bootstrap";
+import { FaCheck, FaPhone } from "react-icons/fa";
+import { ImBin, ImProfile } from "react-icons/im";
+import { MdCancel, MdEmail, MdModeEdit } from "react-icons/md";
+import { TbFileDescription } from "react-icons/tb";
 import Modal from "react-modal";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import UserService from "../../services/user-service";
 import EditProfileModal from "./edit-profile-modal";
 
@@ -88,13 +88,13 @@ const UserDetails = () => {
     }
   };
 
-  // show the delete customer confirmation modal
+  // show the delete user confirmation modal
   const deleteUser = (id) => {
     setUserToDelete(id);
     setShowDeleteModal(true);
   };
 
-  // customer delete confirmation method
+  // user delete confirmation method
   const confirmDelete = () => {
     UserService.deleteUser(userToDelete)
       .then(() => {
@@ -263,7 +263,7 @@ const UserDetails = () => {
           </Col>
         </Row>
 
-        {/* username, roles and phone number fields */}
+        {/* username, role and phone number fields */}
         <Row
           className="mt-4"
           style={{

@@ -1,13 +1,13 @@
-import {default as React, useState} from "react";
-import {Col, Row} from "react-bootstrap";
+import { default as React, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
-import {CgDanger} from "react-icons/cg";
-import {FaCheck, FaPhone, FaUser} from "react-icons/fa";
-import {HiUserAdd} from "react-icons/hi";
-import {MdCancel, MdEmail} from "react-icons/md";
-import {TbFileDescription} from "react-icons/tb";
-import {Link} from "react-router-dom";
-import {withRouter} from "../common/with-router";
+import { CgDanger } from "react-icons/cg";
+import { FaCheck, FaPhone, FaUser } from "react-icons/fa";
+import { HiUserAdd } from "react-icons/hi";
+import { MdCancel, MdEmail } from "react-icons/md";
+import { TbFileDescription } from "react-icons/tb";
+import { Link } from "react-router-dom";
+import { withRouter } from "../common/with-router";
 
 import axios from "axios";
 import authHeader from "../services/auth-header";
@@ -30,6 +30,7 @@ const Register = ({ router }) => {
   const [genericError, setGenericError] = useState("");
   const [usernameError, setUsernameError] = useState("");
 
+  /* On change methods */
   const onChangeUsername = (e) => {
     const username = e.target.value;
     setUsername(username);
@@ -173,7 +174,7 @@ const Register = ({ router }) => {
               phoneNumber,
               roles,
             });
-            // Handle errors based on the payload (email format, phone number format, empty fields)
+            // Handle errors based on the payload (email format, phone number format, username, empty fields)
             if (error.response.status === 400) {
               if (error.response.data === "Error: Email is already in use!") {
                 setEmailError(
@@ -248,7 +249,7 @@ const Register = ({ router }) => {
         height: "88vh",
       }}
     >
-      {/* render the spinner after we have added the customer */}
+      {/* render the spinner after we have added the user */}
       {loading && (
         <div className="text-center">
           <div
@@ -268,7 +269,7 @@ const Register = ({ router }) => {
         </div>
       )}
 
-      {/* Add customer form */}
+      {/* Add user form */}
       {!loading && (
         <div
           style={{
@@ -485,6 +486,7 @@ const Register = ({ router }) => {
                     </div>
                   </div>
 
+                  {/* Username field */}
                   <div
                     style={{
                       position: "relative",
@@ -527,6 +529,8 @@ const Register = ({ router }) => {
                       )}
                     </div>
                   </div>
+
+                  {/* Role field */}
                   <div
                     style={{
                       position: "relative",
@@ -555,6 +559,7 @@ const Register = ({ router }) => {
                   </div>
                 </div>
 
+                {/* Password field */}
                 <div
                   style={{
                     marginBottom: "15px",

@@ -1,6 +1,13 @@
-import {MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBInput, MDBRow,} from "mdb-react-ui-kit";
-import React, {useState} from "react";
-import {withRouter} from "../common/with-router";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCol,
+  MDBContainer,
+  MDBInput,
+  MDBRow,
+} from "mdb-react-ui-kit";
+import React, { useState } from "react";
+import { withRouter } from "../common/with-router";
 import AuthService from "../services/auth-service";
 import Footer from "./footer";
 
@@ -83,6 +90,7 @@ const Login = ({ router }) => {
             }}
           >
             <MDBCardBody className="p-5">
+              {/* Username field */}
               <MDBInput
                 wrapperClass="mb-4"
                 label="Username"
@@ -97,6 +105,7 @@ const Login = ({ router }) => {
                 onChange={(e) => setUsername(e.target.value)}
                 validations={[required]}
               />
+              {/* Password field */}
               <MDBInput
                 wrapperClass="mb-4"
                 label="Password"

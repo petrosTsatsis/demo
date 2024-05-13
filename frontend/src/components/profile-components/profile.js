@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "react-avatar";
-import {Card, CardBody, Col, ListGroup, Row} from "react-bootstrap";
-import {FaPhone} from "react-icons/fa";
-import {ImProfile} from "react-icons/im";
-import {MdEmail, MdModeEdit} from "react-icons/md";
-import {TbFileDescription} from "react-icons/tb";
+import { Card, CardBody, Col, ListGroup, Row } from "react-bootstrap";
+import { FaPhone } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
+import { MdEmail, MdModeEdit } from "react-icons/md";
+import { TbFileDescription } from "react-icons/tb";
 import UserService from "../../services/user-service";
 import EditProfileModal from "./edit-profile-modal";
 
@@ -214,7 +214,7 @@ const Profile = () => {
           </Col>
         </Row>
 
-        {/* username, roles and phone number fields */}
+        {/* username, role and phone number fields */}
         <Row
           className="mt-4"
           style={{

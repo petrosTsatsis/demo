@@ -20,6 +20,7 @@ function Footer() {
     };
   }, []);
 
+  // add 0 in the minutes and seconds when we have single digit number
   const formatTime = (time) => {
     const hours = time.getHours();
     const minutes =
