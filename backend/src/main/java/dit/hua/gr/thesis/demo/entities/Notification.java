@@ -35,6 +35,12 @@ public class Notification {
     @JsonIgnore
     private Customer customer;
 
+    // contact relationship field
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "contact_id")
+    @JsonIgnore
+    private Contact contact;
+
     // user relationship field
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
@@ -105,6 +111,14 @@ public class Notification {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public User getUser() {

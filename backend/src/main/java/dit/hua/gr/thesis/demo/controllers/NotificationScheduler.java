@@ -1,10 +1,7 @@
 package dit.hua.gr.thesis.demo.controllers;
 
 import dit.hua.gr.thesis.demo.entities.*;
-import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
-import dit.hua.gr.thesis.demo.repositories.EventRepository;
-import dit.hua.gr.thesis.demo.repositories.SoftwareRepository;
-import dit.hua.gr.thesis.demo.repositories.UserRepository;
+import dit.hua.gr.thesis.demo.repositories.*;
 import dit.hua.gr.thesis.demo.service.EmailService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +37,9 @@ public class NotificationScheduler {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private ContactRepository contactRepository;
+
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Scheduled(cron = "0 0 20 * * ?")// Runs at midnight (12:00 AM) every day
@@ -74,6 +74,7 @@ public class NotificationScheduler {
 
                 List<User> users = new ArrayList<>(event.getUsers());
                 List<Customer> customers = new ArrayList<>(event.getCustomers());
+                List<Contact> contacts = new ArrayList<>(event.getContacts());
 
                 for (User user : users) {
 
@@ -106,6 +107,20 @@ public class NotificationScheduler {
                     emailService.sendEmail(customer.getEmail(), content, subject);
 
                     customerRepository.save(customer);
+
+                }
+
+                for (Contact contact : contacts) {
+
+                    String content = "Don't forget, you have an event in three days!";
+                    // create a reminder email notification
+                    Notification emailNotification = new Notification(NotificationType.EMAIL, content, Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant()), false);
+                    emailNotification.setEvent(event);
+                    emailNotification.setContact(contact);
+                    contact.getNotifications().add(emailNotification);
+                    emailService.sendEmail(contact.getEmail(), content, subject);
+
+                    contactRepository.save(contact);
 
                 }
             }

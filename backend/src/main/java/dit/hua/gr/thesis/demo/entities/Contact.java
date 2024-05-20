@@ -61,6 +61,12 @@ public class Contact {
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date registrationDate;
 
+    // notification relationship field
+    @OneToMany(mappedBy = "contact",
+            cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Notification> notifications;
+
     // user relationship field
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
@@ -166,6 +172,14 @@ public class Contact {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     public User getUser() {

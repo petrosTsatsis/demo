@@ -1360,3 +1360,6 @@ input.contact-birthdate {
 .CircularProgressbar-trail {
   stroke: rgba(139, 139, 139, 0.301) !important;
 }
+
+.offcanvas-open {
+padding: 0px !important;}
