@@ -1,7 +1,8 @@
 package dit.hua.gr.thesis.demo.controllers;
 
-import dit.hua.gr.thesis.demo.entities.Event;
-import dit.hua.gr.thesis.demo.entities.User;
+import dit.hua.gr.thesis.demo.entities.*;
+import dit.hua.gr.thesis.demo.repositories.ContactRepository;
+import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
 import dit.hua.gr.thesis.demo.repositories.EventRepository;
 import dit.hua.gr.thesis.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class EventController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private ContactRepository contactRepository;
 
     // get all events
     @GetMapping("")
@@ -84,6 +91,20 @@ public class EventController {
             otherUser.getEvents().remove(event);
             userRepository.save(otherUser);
         }
+
+        List<Customer> customers = event.getCustomers();
+        for(Customer otherCustomer : customers){
+            otherCustomer.getEvents().remove(event);
+            customerRepository.save(otherCustomer);
+        }
+
+        List<Contact> contacts = event.getContacts();
+        for(Contact otherContact : contacts){
+            otherContact.getEvents().remove(event);
+            contactRepository.save(otherContact);
+        }
+
+        event.setSoftware(null);
 
         eventRepository.delete(event);
 
