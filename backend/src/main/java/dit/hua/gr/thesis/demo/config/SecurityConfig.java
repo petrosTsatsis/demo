@@ -25,8 +25,6 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
-
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
@@ -35,12 +33,11 @@ public class SecurityConfig {
         return new AuthTokenFilter();
     }
 
-
     @Bean
-    public AuthenticationManager authenticationManagerBean (AuthenticationConfiguration authConfig) throws Exception {
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
-
     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -57,22 +54,36 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    private static final String[] SWAGGER_WHITELIST = {
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-resources",
+            "/swagger-ui.html",
+            "/webjars/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/test/**").permitAll()
-                                .requestMatchers("/home").permitAll()
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(auth -> {
+                            try {
+                                auth
+                                        .requestMatchers("/api/auth/**").permitAll()
+                                        .requestMatchers("/api/test/**").permitAll()
+                                        .requestMatchers("/home").permitAll()
+                                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                                        .anyRequest().authenticated().and().httpBasic();
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                 );
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
 }
 
 
