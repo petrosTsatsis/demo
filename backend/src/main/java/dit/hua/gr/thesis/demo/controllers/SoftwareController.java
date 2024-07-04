@@ -1,10 +1,7 @@
 package dit.hua.gr.thesis.demo.controllers;
 
 import dit.hua.gr.thesis.demo.entities.*;
-import dit.hua.gr.thesis.demo.repositories.ActivityRepository;
-import dit.hua.gr.thesis.demo.repositories.CustomerRepository;
-import dit.hua.gr.thesis.demo.repositories.SoftwareRepository;
-import dit.hua.gr.thesis.demo.repositories.UserRepository;
+import dit.hua.gr.thesis.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +33,9 @@ public class SoftwareController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     // get all software
     @PreAuthorize("hasRole('MANAGER') OR hasRole('ADMIN')")
@@ -126,6 +126,28 @@ public class SoftwareController {
         String activityDescription = "Deleted a software : " + software.getName();
         Activity activity = new Activity(activityDescription, new Date(), user);
         activityRepository.save(activity);
+
+        List<Event> events = software.getEvents();
+        List<Customer> customers;
+        List<User> users;
+
+        for(Event event: events){
+            customers = event.getCustomers();
+            users = event.getUsers();
+
+            for(Customer customer: customers){
+                customer.getEvents().remove(event);
+                customerRepository.save(customer);
+            }
+
+            for(User user1: users){
+                user1.getEvents().remove(event);
+                userRepository.save(user1);
+            }
+
+            eventRepository.save(event);
+            eventRepository.delete(event);
+        }
 
         // delete the software
         softwareRepository.delete(software);

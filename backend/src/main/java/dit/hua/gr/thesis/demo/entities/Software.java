@@ -69,13 +69,13 @@ public class Software {
 
     // event relationship field
     @OneToMany(mappedBy = "software",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+            cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Event> events;
 
     // purchase relationship field
     @OneToMany(mappedBy = "software",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+            cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Purchase> purchases;
 
